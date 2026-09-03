@@ -237,6 +237,24 @@ class Ladder:
         self.rung = 0
         self.stake = self.base_stake
 
+    def current_run_stakes(self) -> list[float]:
+        """Actual stakes of the wins in the unbroken run leading to this rung.
+
+        Rungs already climbed were staked at real, differing prices. Rebuilding
+        them from base_stake at one assumed price shows numbers you never bet.
+        """
+        out: list[float] = []
+        for h in reversed(self.history):
+            if h.get("event") == "cash_out":
+                break
+            r = h.get("result")
+            if r == "win":
+                out.append(float(h.get("stake") or 0))
+            elif r in ("loss",):
+                break
+        out.reverse()
+        return out[-self.rung:] if self.rung else []
+
     def projection(self, decimal: float, rungs: int | None = None) -> list[dict]:  # noqa: D401
         rungs = rungs or self.max_rung
         rows, s = [], self.next_stake()

@@ -7,7 +7,7 @@ return forward and resets on a loss. Finished games are graded automatically
 from ESPN's final scores.
 
 Ships an HTML dashboard (auto-published to GitHub Pages) and coloured terminal
-output. Python standard library only — 71 tests, no dependencies.
+output. Python standard library only — 79 tests, no dependencies.
 
 ![rung](docs/badge.svg)
 
@@ -109,6 +109,22 @@ What you can do on the page:
 Editing on the page changes nothing on its own. Nothing is recorded until you
 run the command, which is deliberate — a dashboard that silently disagreed with
 your betting account would be worse than no dashboard.
+
+## The repo ships mid-ladder
+
+`state/ladder.json` is seeded with the -167 winner from 2 September: $5.00
+returning $7.99. So it starts on **rung 1 with $7.99 next**, not rung 0.
+
+The dashboard's **Load repo history** button pulls that bet into the browser
+ledger too, merging by id, so both records agree from the first load.
+
+### Staircase now uses real stakes
+
+It was rebuilding every rung from `base_stake` at one assumed price, so rung 1
+read $7.92 — base compounded at the window midpoint — when the actual stake on
+the table was $7.99. Climbed rungs now show the stakes you really bet, and a
+climbed rung's return is the next rung's stake, because that is what you
+actually collected.
 
 ## My ladder — the browser ledger
 

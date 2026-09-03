@@ -52,6 +52,7 @@ LEDGER_HTML = """
     <button class=mini id=lgr-json type=button>Export JSON</button>
     <button class=mini id=lgr-csv type=button>Export CSV</button>
     <button class=mini id=lgr-imp type=button>Import</button>
+    <button class=mini id=lgr-seed type=button>Load repo history</button>
     <button class=mini id=lgr-clear type=button>Clear</button>
   </div>
   <div class=exp id=lgr-out style="display:none"></div>
@@ -242,6 +243,19 @@ LEDGER_JS = r"""
   document.getElementById('lgr-clear').onclick=function(){
     if(confirm('Delete all '+entries.length+' ledger entries on this device?')){
       entries=[]; save(entries); draw(); syncButtons(); } };
+  // Pull the committed state/ladder.json history into this browser, merging by
+  // id so nothing duplicates. This is how a new device catches up.
+  document.getElementById('lgr-seed').onclick=function(){
+    var hist=(D.history||[]);
+    if(!hist.length){ alert('No settled bets in the repo state yet.'); return; }
+    var seen={}; entries.forEach(function(e){ seen[e.id]=1; });
+    var added=0;
+    hist.forEach(function(h){ if(!seen[h.id]){ entries.push(h); added++; } });
+    save(entries); draw(); syncButtons();
+    alert('Merged '+added+' from the repo, skipped '+(hist.length-added)+
+          ' already here.');
+  };
+
   document.getElementById('lgr-imp').onclick=function(){
     var t=prompt('Paste exported ledger JSON'); if(!t) return;
     var inc; try{ inc=JSON.parse(t); }catch(e){ alert('That is not valid JSON'); return; }

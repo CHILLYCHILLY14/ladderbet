@@ -754,3 +754,103 @@ def test_results_json_shape():
     round_tripped = j.loads(j.dumps(payload))
     g = round_tripped["games"]["401999"]
     assert g["completed"] is True and g["winner"] in ("home", "away", "draw")
+
+
+# ---------- seeded state ----------
+def test_shipped_state_is_on_rung_one_at_799():
+    """The repo ships mid-ladder: one -167 winner already banked."""
+    import json as j
+    from pathlib import Path
+    p = Path(__file__).parent.parent / "state" / "ladder.json"
+    assert p.exists(), "state/ladder.json should ship seeded"
+    d = j.loads(p.read_text())
+    assert d["rung"] == 1
+    assert d["stake"] == 7.99
+    assert d["max_rung"] == 10
+    assert len(d["history"]) == 1
+    h = d["history"][0]
+    assert h["result"] == "win"
+    assert h["stake"] == 5.0 and h["returned"] == 7.99
+    assert round(h["decimal"], 3) == 1.599
+    assert d["net"] == 0.0            # nothing banked until a cash-out or bust
+
+
+def test_rounded_decimal_would_give_the_wrong_stake():
+    """1.599 pays 8.00; the real -167 (1.5988...) pays 7.99. Store the real one."""
+    from ladder.oddsmath import american_to_decimal
+    assert round(5 * 1.599, 2) == 8.0
+    assert round(5 * american_to_decimal(-167), 2) == 7.99
+
+
+def test_next_stake_from_shipped_state_is_799():
+    import json as j
+    from pathlib import Path
+    p = Path(__file__).parent.parent / "state" / "ladder.json"
+    lad = Ladder(**{k: v for k, v in j.loads(p.read_text()).items()
+                    if k in Ladder.__dataclass_fields__})
+    assert lad.next_stake() == 7.99
+    assert lad.rung == 1
+
+
+def test_repo_history_is_embedded_for_browser_seeding():
+    import json as j, re
+    lad = Ladder(one_bet_per_day=False, base_stake=5.0, max_rung=10)
+    lad.place({"pick": "New York Yankees", "decimal": 1.599, "american": -167,
+               "league": "mlb", "matchup": "NYY @ LAA"}, price=1.599)
+    lad.settle("win")
+    doc = _page([CAND], lad)
+    data = j.loads(re.search(r'id="ladder-data">(.*?)</script>', doc, re.S)
+                   .group(1).replace("<\\/", "</"))
+    assert len(data["history"]) == 1
+    assert data["history"][0]["pick"] == "New York Yankees"
+    assert data["history"][0]["result"] == "win"
+    assert data["history"][0]["id"].startswith("repo_")
+    assert "lgr-seed" in doc
+
+
+# ---------- staircase uses real stakes, not a rebuild from base ----------
+def test_staircase_starts_from_the_live_stake():
+    """Bug: R1 rendered as $7.92 (base compounded at the window midpoint)
+    when the real stake sitting on the table was $7.99."""
+    from ladder import tui
+    lad = Ladder(one_bet_per_day=False, base_stake=5.0, max_rung=10,
+                 stake_increment=0.01)
+    from ladder.oddsmath import american_to_decimal
+    d = american_to_decimal(-167)          # 1.5988..., NOT the rounded 1.599
+    lad.place({"pick": "New York Yankees", "decimal": d}, price=d)
+    lad.settle("win")
+    assert lad.next_stake() == 7.99, "5.00 at -167 returns 7.99, not 8.00"
+    assert lad.rung == 1
+
+    bars = tui.ladder_bars(lad.rung, lad.max_rung, lad.base_stake, 1.583,
+                           lad.next_stake(), lad.current_run_stakes())
+    assert "7.99" in bars
+    assert "7.92" not in bars          # the wrong number
+
+
+def test_climbed_rung_shows_what_you_actually_collected():
+    from ladder import tui
+    bars = tui.ladder_bars(1, 10, 5.0, 1.583, 7.99, [5.0])
+    r0 = [l for l in bars.splitlines() if "R0" in l][0]
+    assert "5.00" in r0 and "7.99" in r0    # not 5.00 -> 7.92
+
+
+def test_current_run_stakes_stops_at_a_loss():
+    lad = Ladder(one_bet_per_day=False, base_stake=5.0, max_rung=10)
+    lad.place({"pick": "A", "decimal": 1.6}); lad.settle("win")
+    lad.place({"pick": "B", "decimal": 1.6}); lad.settle("loss")
+    assert lad.current_run_stakes() == []
+    lad.place({"pick": "C", "decimal": 1.6}); lad.settle("win")
+    assert lad.current_run_stakes() == [5.0]
+
+
+def test_dashboard_svg_uses_real_stakes():
+    from ladder import render as rnd
+    lad = Ladder(one_bet_per_day=False, base_stake=5.0, max_rung=10,
+                 stake_increment=0.01)
+    from ladder.oddsmath import american_to_decimal
+    d = american_to_decimal(-167)
+    lad.place({"pick": "A", "decimal": d}, price=d)
+    lad.settle("win")
+    doc = _page([CAND], lad)
+    assert "$7.99" in doc

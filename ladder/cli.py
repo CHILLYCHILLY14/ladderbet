@@ -442,11 +442,15 @@ def cmd_record(args, cfg):
             "provider": args.book, "side": "", "event_id": "", "start_utc": ""}
 
     bet = lad.place(cand, price=dec, stake=args.stake)
+    if args.on:
+        bet["placed_at"] = f"{args.on}T18:00:00+00:00"
     print(f"\nrecorded rung {bet['rung']}: {tui.bold(bet['pick'])} "
           f"{bet['american']:+.0f}   ${bet['stake']:.2f} -> ${bet['to_return']:.2f}")
 
     if args.result:
         b = lad.settle(args.result)
+        if args.on:
+            b["settled_at"] = f"{args.on}T23:30:00+00:00"
         c = tui.green if args.result == "win" else tui.red
         print(f"  settled {c(args.result.upper())}   "
               f"returned ${b.get('returned', 0):.2f}")
@@ -500,7 +504,8 @@ def cmd_status(args, cfg):
     from .oddsmath import decimal_to_american as _d2a
     print(tui.rule(f"PROJECTION @ {d:.3f} ({_d2a(d):+.0f})"))
     print(tui.dim(f"  based on {src} — a shorter price shrinks every rung"))
-    print(tui.ladder_bars(lad.rung, lad.max_rung, lad.base_stake, d))
+    print(tui.ladder_bars(lad.rung, lad.max_rung, lad.base_stake, d,
+                          lad.next_stake(), lad.current_run_stakes()))
     print()
 
 
@@ -635,6 +640,7 @@ def main(argv=None):
     p.add_argument("--league", default="")
     p.add_argument("--matchup", default="")
     p.add_argument("--book", default="manual")
+    p.add_argument("--on", help="date the bet was placed, YYYY-MM-DD")
     p.add_argument("--force", action="store_true")
     p.set_defaults(fn=cmd_record)
 

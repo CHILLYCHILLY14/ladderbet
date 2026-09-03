@@ -238,15 +238,24 @@ def _money(v: float) -> str:
 
 
 def ladder_svg(rung: int, max_rung: int, base: float, decimal: float,
-               pending: dict | None = None) -> str:
-    """Rungs as a climbing staircase. Filled = won, glowing = live, dim = ahead."""
+               pending: dict | None = None, current_stake: float | None = None,
+               past: list[float] | None = None) -> str:
+    """Rungs as a climbing staircase. Filled = won, glowing = live, dim = ahead.
+
+    Climbed rungs show the stakes actually bet; rungs ahead compound from the
+    live stake, not from base at an assumed price.
+    """
     W, RH, GAP, PAD = 760, 30, 7, 8
     H = PAD * 2 + max_rung * (RH + GAP) - GAP
 
-    stakes, s = [], base
-    for _ in range(max_rung):
-        stakes.append(s)
-        s *= decimal
+    past = list(past or [])
+    stakes = []
+    for i in range(min(rung, max_rung)):
+        stakes.append(past[i] if i < len(past) else base)
+    s = current_stake if current_stake is not None else base
+    for _ in range(rung, max_rung):
+        stakes.append(round(s, 2))
+        s = round(s * decimal, 2)
     top_payout = s
 
     parts = [f'<svg viewBox="0 0 {W} {H}" width="100%" '
@@ -283,7 +292,8 @@ def ladder_svg(rung: int, max_rung: int, base: float, decimal: float,
         parts.append(f'<text x="14" y="{y + RH / 2 + 4.5}" font-size="12" '
                      f'font-family="ui-monospace,monospace" '
                      f'fill="{"#f0b429" if i == rung else "#5f7085"}">R{i}</text>')
-        label = f"{_money(stakes[i])} → {_money(stakes[i] * decimal)}"
+        ret = stakes[i + 1] if (i < rung and i + 1 < len(stakes)) else stakes[i] * decimal
+        label = f"{_money(stakes[i])} → {_money(ret)}"
         if w > 210:
             parts.append(f'<text x="58" y="{y + RH / 2 + 4.5}" font-size="12.5" '
                          f'font-family="ui-monospace,monospace" fill="{txt}" '
@@ -366,6 +376,9 @@ def render(state: dict, candidates: list[dict], warnings: list[str],
         nets.append(round(acc, 2))
 
     decimal, dec_source = projection_price(state, candidates, window)
+    past_stakes = [float(h.get("stake") or 0)
+                   for h in state.get("history", []) if h.get("result") == "win"][-rung:] \
+        if rung else []
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     p = [f"<!doctype html><html lang=en><head><meta charset=utf-8>"
          f"<meta name=viewport content='width=device-width,initial-scale=1'>"
@@ -399,7 +412,7 @@ def render(state: dict, candidates: list[dict], warnings: list[str],
              f"<b>{decimal:.3f}</b> ({amer:+.0f}) — {_esc(dec_source)}. "
              f"Every rung compounds the price you actually get, so a shorter "
              f"price shrinks the whole ladder.</div>"
-             f"<div id=stair>{ladder_svg(rung, max_rung, base, decimal, pending)}</div>"
+             f"<div id=stair>{ladder_svg(rung, max_rung, base, decimal, pending, nxt, past_stakes)}</div>"
              f"<div class=sub id=cashout style='margin-top:8px'></div>"
              "</section>")
 
@@ -558,6 +571,21 @@ def render(state: dict, candidates: list[dict], warnings: list[str],
                         "league": c.get("league") or "",
                         "matchup": c.get("matchup") or ""}
                        for c in candidates[:5]],
+        "history": [{"id": "repo_" + str(h.get("placed_at", ""))[:19] + "_"
+                           + str(h.get("pick", ""))[:12],
+                     "added": h.get("placed_at", ""),
+                     "settled_at": h.get("settled_at", ""),
+                     "event_id": str(h.get("event_id") or ""),
+                     "side": h.get("side") or "",
+                     "league": h.get("league") or "",
+                     "matchup": h.get("matchup") or "",
+                     "pick": h.get("pick", ""),
+                     "decimal": float(h.get("decimal") or 1.5),
+                     "american": float(h.get("american") or 0),
+                     "stake": float(h.get("stake") or 0),
+                     "stake_edited": True,
+                     "result": h.get("result")}
+                    for h in state.get("history", []) if h.get("result")],
     }).replace("</", "<\\/"))
     p.append("</script>")
     p.append(LEDGER_HTML)

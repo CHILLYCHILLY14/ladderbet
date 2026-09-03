@@ -26,17 +26,35 @@ def rule(title: str = "", width: int = 58) -> str:
     return dim("── ") + bold(title) + " " + dim("─" * pad)
 
 
-def ladder_bars(rung: int, max_rung: int, base: float, decimal: float) -> str:
-    """Staircase of rungs, widths proportional to stake."""
-    stakes, s = [], base
-    for _ in range(max_rung):
-        stakes.append(s)
-        s *= decimal
+def ladder_bars(rung: int, max_rung: int, base: float, decimal: float,
+                current_stake: float | None = None,
+                past: list[float] | None = None) -> str:
+    """Staircase of rungs, widths proportional to stake.
+
+    Rungs already climbed use the stakes actually bet (`past`); rungs ahead
+    compound forward from `current_stake`, not from base at a made-up price.
+    """
+    past = list(past or [])
+    stakes = []
+    for i in range(max_rung):
+        if i < rung and i < len(past):
+            stakes.append(past[i])
+        elif i < rung:
+            stakes.append(base)
+        else:
+            break
+    s = current_stake if current_stake is not None else base
+    for _ in range(rung, max_rung):
+        stakes.append(round(s, 2))
+        s = round(s * decimal, 2)
     top = stakes[-1] or 1.0
     out = []
     for i in range(max_rung - 1, -1, -1):
         w = max(1, round(stakes[i] / top * 26))
-        label = f"${stakes[i]:>9,.2f} -> ${stakes[i]*decimal:>10,.2f}"
+        # A climbed rung's return IS the next rung's stake — that is what you
+        # actually collected, at the price you actually got.
+        ret = stakes[i + 1] if (i < rung and i + 1 < len(stakes)) else stakes[i] * decimal
+        label = f"${stakes[i]:>9,.2f} -> ${ret:>10,.2f}"
         if i < rung:
             out.append(f"  {green('R%d' % i)} {green('█' * w)}{dim('·' * (26-w))}  {label}")
         elif i == rung:
