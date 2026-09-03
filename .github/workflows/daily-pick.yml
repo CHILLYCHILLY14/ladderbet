@@ -1,0 +1,89 @@
+name: Ladder
+
+on:
+  schedule:
+    # 14:00 UTC = 10:00 ET. Late games from last night are final by now.
+    - cron: "0 14 * * *"
+  workflow_dispatch:
+    inputs:
+      settle_as:
+        description: "Force yesterday's result instead of auto-grading"
+        type: choice
+        options: [auto, win, loss, push, skip]
+        default: auto
+      place:
+        description: "Place today's top pick"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  issues: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: ladder
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with: { python-version: "3.12" }
+
+      # ORDER MATTERS: settle yesterday before placing today, or the
+      # one-pending-bet rule blocks the new pick.
+      - name: 1. Settle yesterday's bet
+        if: inputs.settle_as != 'skip'
+        run: python -m ladder settle "${{ inputs.settle_as || 'auto' }}"
+
+      - name: 2. Place today's pick
+        if: inputs.place != false
+        run: NO_COLOR=1 python -m ladder pick --top 5 --place
+
+      - name: 3. Build report
+        run: |
+          { echo '```'; NO_COLOR=1 python -m ladder status; echo;
+            NO_COLOR=1 python -m ladder ledger --limit 10; echo '```'; } > pick.md
+          python -m ladder render --out docs/index.html
+          cat pick.md
+
+      - name: 4. Post to issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync('pick.md','utf8') +
+              `\n[Dashboard](https://${context.repo.owner}.github.io/${context.repo.repo}/)` +
+              `\n\nIf you took a different price, run: ` +
+              '`python -m ladder amend --price 1.52`';
+            await github.rest.issues.create({
+              owner: context.repo.owner, repo: context.repo.repo,
+              title: `Ladder — ${new Date().toISOString().slice(0,10)}`,
+              body, labels: ['ladder']
+            });
+
+      - name: 5. Commit state
+        run: |
+          mkdir -p picks && cp pick.md "picks/$(date -u +%F).md"
+          git config user.name  "ladder-bot"
+          git config user.email "ladder-bot@users.noreply.github.com"
+          git add state picks docs
+          git diff --staged --quiet || git commit -m "ladder: $(date -u +%F)"
+          git push
+
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: docs }
+
+  deploy:
+    needs: run
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.d.outputs.page_url }}
+    steps:
+      - id: d
+        uses: actions/deploy-pages@v4
