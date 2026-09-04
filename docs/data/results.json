@@ -1,6 +1,13 @@
 {
- "generated": "2026-09-04T18:16:08+00:00",
+ "generated": "2026-09-04T21:58:54+00:00",
  "games": {
+  "401877193": {
+   "completed": true,
+   "winner": "home",
+   "league": "mlb",
+   "date": "2026-09-04",
+   "score": "DET 6 @ CLE 7"
+  },
   "401816789": {
    "completed": true,
    "winner": "home",
@@ -350,6 +357,13 @@
    "league": "ncaaf",
    "date": "2026-09-04",
    "score": "UAB 23 @ ILL 42"
+  },
+  "401879288": {
+   "completed": true,
+   "winner": "away",
+   "league": "epl",
+   "date": "2026-09-04",
+   "score": "LIV 2 @ IPS 0"
   }
  }
 }
