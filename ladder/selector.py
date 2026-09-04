@@ -1,4 +1,4 @@
-"""Screen ESPN moneylines down to one bet per day.
+"""Screen ESPN moneylines into a selectable ladder option board.
 
 An honest note about what can and cannot be computed here. ESPN's scoreboard
 usually returns ONE provider. De-vigging a single two-way market gives you that
@@ -15,6 +15,8 @@ Ranking is therefore on de-vigged win probability, which is exactly the
 from __future__ import annotations
 
 from dataclasses import dataclass, asdict, field
+from datetime import datetime, timedelta, timezone
+import math
 from statistics import mean
 
 from . import espn
@@ -215,18 +217,41 @@ def collect(
     fetch=None,
 ) -> tuple[list[Candidate], list[str]]:
     """Returns (candidates, warnings). `fetch` is injectable for tests."""
+    live_fetch = fetch is None
     fetch = fetch or espn.events
     cands: list[Candidate] = []
     warnings: list[str] = []
 
+    # ESPN's undated endpoint often stays on the US calendar day that just
+    # ended. Explicitly fetch every date touched by the horizon so evening
+    # refreshes include tonight and tomorrow instead of yesterday's finals.
+    if date or not live_fetch:
+        dates: list[str | None] = [date]
+    else:
+        anchor = datetime.now(timezone.utc).date()
+        days = max(1, math.ceil(horizon_hours / 24) + 1)
+        dates = [(anchor + timedelta(days=i)).strftime("%Y%m%d")
+                 for i in range(days)]
+
     for lg in leagues:
-        try:
-            evs = fetch(lg, date)
-        except espn.ESPNError as e:
-            warnings.append(f"{lg}: {e}")
-            continue
+        evs, seen = [], set()
+        errors = []
+        for d in dates:
+            try:
+                batch = fetch(lg, d)
+            except espn.ESPNError as e:
+                errors.append(str(e))
+                continue
+            for ev in batch:
+                key = str(ev.get("id") or "")
+                if key and key in seen:
+                    continue
+                if key:
+                    seen.add(key)
+                evs.append(ev)
         if not evs:
-            warnings.append(f"{lg}: no events returned")
+            detail = f" ({errors[0]})" if errors else ""
+            warnings.append(f"{lg}: no events returned{detail}")
             continue
         found = 0
         for ev in evs:

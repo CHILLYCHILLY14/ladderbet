@@ -65,6 +65,17 @@ def test_rank_picks_highest_fair_prob():
     assert top.fair_prob == max(c.fair_prob for c in cands)
 
 
+def test_live_collect_scans_each_date_in_the_horizon(monkeypatch):
+    calls = []
+    def fake_events(league, date=None):
+        calls.append((league, date))
+        return []
+    monkeypatch.setattr(espn, "events", fake_events)
+    collect(["mlb"], horizon_hours=48, **WIN)
+    assert len(calls) == 3
+    assert all(league == "mlb" and len(date) == 8 for league, date in calls)
+
+
 def test_three_way_soccer_costs_more_hold():
     cands, _ = collect(["mlb", "epl"], horizon_hours=1e9, fetch=fetch, **WIN)
     epl = [c for c in cands if c.league == "epl"][0]
@@ -263,8 +274,11 @@ def test_ledger_running_net_and_summary():
     rows = ledger.rows(st)
     assert len(rows) == 2
     assert rows[-1]["running_net"] == -5.0     # only base is new money
+    assert rows[0]["profit_loss"] == 2.7
+    assert rows[-1]["running_profit_loss"] == -5.0
     s = ledger.summary(st)
     assert s["bets"] == 2 and s["win_rate"] == 0.5
+    assert s["profit_loss"] == -5.0
     assert s["avg_slippage"] < 0
     assert s["clv_n"] == 2
 
@@ -650,8 +664,17 @@ def test_page_is_fully_offline():
 def test_ledger_ui_is_present_with_controls():
     doc = _page([CAND])
     for probe in ("My ladder", "id=lgr-json", "id=lgr-csv", "id=lgr-imp",
-                  "id=lgr-clear", "id=lgr-rows", "id=lgr-stats"):
+                  "id=lgr-clear", "id=lgr-rows", "id=lgr-stats",
+                  "id=lgr-custom", "Right / wrong", "Profit / loss"):
         assert probe in doc, probe
+
+
+def test_browser_ledger_enforces_one_pending_bet_and_can_settle_it():
+    doc = _page([CAND, dict(CAND, pick="B")])
+    assert "Settle current first" in doc
+    assert "Settle or remove" in doc
+    for result in ("win", "loss", "push"):
+        assert f'data-result="{result}"' in doc
 
 
 def test_add_button_on_every_candidate():
@@ -757,21 +780,25 @@ def test_results_json_shape():
 
 
 # ---------- seeded state ----------
-def test_shipped_state_is_on_rung_one_at_799():
-    """The repo ships mid-ladder: one -167 winner already banked."""
+def test_shipped_state_includes_pirates_win_and_is_on_rung_two():
+    """Yankees then Pirates won, so the next live stake is $12.66."""
     import json as j
     from pathlib import Path
     p = Path(__file__).parent.parent / "state" / "ladder.json"
     assert p.exists(), "state/ladder.json should ship seeded"
     d = j.loads(p.read_text())
-    assert d["rung"] == 1
-    assert d["stake"] == 7.99
+    assert d["rung"] == 2
+    assert d["stake"] == 12.66
     assert d["max_rung"] == 10
-    assert len(d["history"]) == 1
-    h = d["history"][0]
+    assert d["one_bet_per_day"] is False
+    assert d["pending"] is None
+    assert len(d["history"]) == 2
+    h = d["history"][1]
     assert h["result"] == "win"
-    assert h["stake"] == 5.0 and h["returned"] == 7.99
-    assert round(h["decimal"], 3) == 1.599
+    assert h["pick"] == "Pittsburgh Pirates"
+    assert h["event_id"] == "401816789"
+    assert h["stake"] == 7.99 and h["returned"] == 12.66
+    assert h["american"] == -171.0
     assert d["net"] == 0.0            # nothing banked until a cash-out or bust
 
 
@@ -782,14 +809,14 @@ def test_rounded_decimal_would_give_the_wrong_stake():
     assert round(5 * american_to_decimal(-167), 2) == 7.99
 
 
-def test_next_stake_from_shipped_state_is_799():
+def test_next_stake_from_shipped_state_is_1266():
     import json as j
     from pathlib import Path
     p = Path(__file__).parent.parent / "state" / "ladder.json"
     lad = Ladder(**{k: v for k, v in j.loads(p.read_text()).items()
                     if k in Ladder.__dataclass_fields__})
-    assert lad.next_stake() == 7.99
-    assert lad.rung == 1
+    assert lad.next_stake() == 12.66
+    assert lad.rung == 2
 
 
 def test_repo_history_is_embedded_for_browser_seeding():

@@ -63,7 +63,7 @@ Two more things worth knowing:
 2. De-vig the complete market proportionally (three-way for soccer).
 3. Reject holds above `max_hold`, and **reject negative holds** — a single book
    never offers arbitrage, so that means bad or partial data.
-4. Keep the side only if its decimal price lands in 1.50–1.667.
+4. Keep the side only if its decimal price lands in 1.40–1.667 (-250 to -150).
 5. Rank by de-vigged win probability; tiebreak on cheaper hold.
 
 Soccer is included but is a worse fit: the draw makes it a three-way market,
@@ -91,9 +91,9 @@ so the number on screen is the number the book will pay.
 
 ## The dashboard is interactive
 
-The page is static — GitHub Pages cannot write back to the repo — so it is a
-calculator and a command generator, not the source of truth. `state/ladder.json`
-in the repo stays authoritative.
+The page is static — GitHub Pages cannot write back to the repo — but its local
+browser ledger is fully interactive. `state/ladder.json` remains the committed
+record, while the browser tracks the bets you actually select on that device.
 
 What you can do on the page:
 
@@ -101,22 +101,27 @@ What you can do on the page:
   sync. Type the price your book is actually showing and the stake, return,
   profit, break-even, edge and the entire ladder staircase recalculate live.
   `reset` puts the screened price back.
-- **Select a bet.** Tap any card. The staircase redraws for that bet's price and
-  the command box updates.
+- **Select one bet.** Tap **Select bet** on any card. Only one bet can be pending;
+  the other choices lock until you mark it Win, Loss or Push (or remove it).
+- **Keep climbing the same day.** A win immediately advances the rung, updates
+  the next stake, and unlocks all later options. There is no one-bet-per-day lock.
+- **Enter a custom bet.** If your sportsbook has a choice missing from the feed,
+  enter its selection, American odds and stake directly under My ladder.
 - **Copy the command.** The box shows the exact `ladder place N --price X` line
   for whatever you selected and edited. Run it to make it real.
 
-Editing on the page changes nothing on its own. Nothing is recorded until you
-run the command, which is deliberate — a dashboard that silently disagreed with
-your betting account would be worse than no dashboard.
+Editing a candidate only previews the price. **Select bet** records it in the
+browser ledger; the command box is still available when you want to commit the
+same selection into the repo state.
 
 ## The repo ships mid-ladder
 
-`state/ladder.json` is seeded with the -167 winner from 2 September: $5.00
-returning $7.99. So it starts on **rung 1 with $7.99 next**, not rung 0.
+`state/ladder.json` contains the -167 Yankees winner from 2 September and your
+-171 Pirates winner from 3 September. The Pirates bet staked $7.99 and returned
+$12.66, so the live ladder is now **rung 2 with $12.66 next**.
 
-The dashboard's **Load repo history** button pulls that bet into the browser
-ledger too, merging by id, so both records agree from the first load.
+Committed history now merges into the browser automatically without duplicating
+the same real bet. **Load repo history** remains as a manual refresh control.
 
 ### Staircase now uses real stakes
 
@@ -130,11 +135,11 @@ actually collected.
 
 Modelled on `mlb-edge-lab`'s My Ledger, adapted to a ladder.
 
-Tap **+ Ledger** on any candidate and it lands at that price — including any
+Tap **Select bet** on any candidate and it lands at that price — including any
 price you typed into the odds box — with the rung's stake prefilled. Tap the
-stake to change it if you bet a different number. Tap the button again to remove
-it. Entries settle themselves: every build publishes `docs/data/results.json`
-with finished games, and the page grades your entries against it.
+stake to change it if you bet a different number. Mark it Win, Loss or Push as
+soon as it settles, or let the results feed grade it. Every build publishes
+`docs/data/results.json` with finished games for automatic settlement.
 
 The one real difference from a flat bet ledger: **a ladder is sequential.**
 Rung N's stake is rung N-1's return, so the whole chain is recomputed on every
@@ -170,8 +175,8 @@ number hides which is which the first time a month goes badly.
 
 Every settled bet is stored in `state/ladder.json` and committed to the repo by
 the workflow, so the record survives across machines. The dashboard shows all of
-them — date, pick, matchup, rung, price, stake, return, CLV and running net —
-and `ladder ledger --csv out.csv` exports the lot.
+them — date, pick, matchup, rung, price, stake, return, result, per-bet P/L and
+running P/L — and `ladder ledger --csv out.csv` exports the lot.
 
 ## Choosing which bet to place
 
@@ -313,9 +318,8 @@ Two more caveats it prints for itself, and you should believe both:
 
 ## Guards
 
-- `one_bet_per_day` (on) — one bet per **local calendar day**, using the
-  `timezone` setting, so a late-night run cannot quietly place tomorrow's game
-  as well. Override with `pick --place --force`.
+- `one_bet_per_day` (off) — a settled winner can be rolled into another eligible
+  game the same day. The one-pending-bet rule still prevents overlapping rungs.
 - `stop_loss_busts` (8) / `stop_loss_days` (30) — after that many busted runs
   in the window the ladder halts and refuses to place. `ladder resume` restarts
   it, which is the point: restarting should be a decision, not a default.
@@ -329,8 +333,8 @@ python -m ladder ledger              # table + summary
 python -m ladder ledger --csv out.csv
 ```
 
-Every bet with rung, real price, stake, return, and a running net. The summary
-carries the two numbers worth watching:
+Every bet with rung, real price, stake, return, per-bet P/L, running P/L and the
+ladder's banked net. The summary carries the two numbers worth watching:
 
 **Slippage** — screened price minus what you took. Pure friction; you want it
 near zero.
@@ -367,7 +371,7 @@ rung 3  $23.16 -> $38.61       rung 7  $178.86 -> $298.16
 git clone <your-repo> && cd ca-ladder
 
 python -m ladder leagues                 # what's available
-python -m ladder pick --top 5            # today's candidates
+python -m ladder pick --top 10           # today's candidates
 python -m ladder pick --top 1 --place    # commit the rung
 python -m ladder status                  # rung, stake, projection
 python -m ladder settle auto             # grade from ESPN's final score
@@ -402,15 +406,15 @@ characters. Respects `NO_COLOR` and degrades to plain text when piped.
 
 The state machine advances on `place` then `settle`. If nothing is placed,
 nothing settles, and the rung never changes no matter how many picks get
-printed. The workflow now does the full cycle in one ordered run:
+printed. The workflow now refreshes the selectable option board in one ordered run:
 
-1. **settle** yesterday's bet (auto-graded from ESPN's final score)
-2. **place** today's top pick
-3. **render** the dashboard and post the issue
+1. **settle** any committed pending bet if its game is final
+2. **publish** up to 10 ranked choices without silently selecting one
+3. **render** and deploy the dashboard
 
-Order matters — settling has to come first, or the one-pending-bet rule blocks
-the new pick. If a step legitimately cannot act (game not final, day already
-used, stop-loss tripped) it says so and exits clean instead of failing the run.
+Order matters — settlement has to come first so a completed winner can expose
+the next rung at its new stake. If a step legitimately cannot act (game not
+final or stop-loss tripped), it exits clean instead of failing the run.
 
 ### Recording a bet you placed yourself
 
@@ -434,11 +438,11 @@ of days either side before giving up.
 
 ## Automation
 
-`.github/workflows/daily-pick.yml` runs twice daily: auto-settles the pending
-bet at 12:00 UTC, then posts the pick as an issue at 14:00 UTC, rebuilds the
-dashboard and deploys it to GitHub Pages. No secrets to configure — that's the
-point of dropping the API key. Enable Pages under **Settings → Pages → Source:
-GitHub Actions**.
+`.github/workflows/daily-pick.yml` refreshes at 14:00, 18:00 and 22:00 UTC,
+auto-settles any committed pending bet, publishes the latest choices, rebuilds
+the dashboard and deploys it to GitHub Pages. A push also triggers a refresh.
+No secrets are required. Enable Pages under **Settings → Pages → Source: GitHub
+Actions**.
 
 ## What the simulator says
 
@@ -514,8 +518,8 @@ Then, in the new repo:
    lets the bot commit state and open issues.
 3. **Actions → Ladder → Run workflow** to try it once by hand.
 
-Day to day: the workflow settles and picks on its own, but it cannot know what
-price you actually got. So after placing a real bet, record it:
+Day to day: the workflow refreshes choices and settles committed bets, but it
+does not choose for you. After placing a real bet, record the actual price:
 
 ```bash
 git pull

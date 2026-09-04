@@ -17,6 +17,7 @@ import json
 import urllib.error
 import urllib.request
 from datetime import datetime, timezone
+from functools import lru_cache
 
 SITE = "https://site.api.espn.com/apis/site/v2/sports"
 
@@ -57,6 +58,7 @@ def _get(url: str, timeout: int = 25) -> dict:
         raise ESPNError(f"network error for {url}: {e.reason}") from e
 
 
+@lru_cache(maxsize=128)
 def scoreboard(league: str, date: str | None = None) -> dict:
     """date is YYYYMMDD. Omit for ESPN's default window (today / current week)."""
     if league not in LEAGUES:

@@ -27,7 +27,7 @@ class Ladder:
     currency: str = "CAD"
     max_stake: float = 0.0        # 0 = no ceiling; else auto-cash before exceeding
     stake_increment: float = 0.01  # round stakes DOWN to this (never overstake)
-    one_bet_per_day: bool = True
+    one_bet_per_day: bool = False
     stop_loss_busts: int = 0      # 0 = off; halt after N busts in the window
     stop_loss_days: int = 30
     timezone: str = "America/Toronto"

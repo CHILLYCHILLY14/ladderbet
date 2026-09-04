@@ -1,6 +1,6 @@
 """The dashboard's own ledger, modelled on mlb-edge-lab's My Ledger.
 
-Same idea, adapted to a ladder. Tap "+ Ledger" on any candidate and it lands at
+Same idea, adapted to a ladder. Tap "Select bet" on any candidate and it lands at
 that price with the rung's stake prefilled. Tap the stake to change it. Tap the
 button again to remove it. Entries settle themselves against
 docs/data/results.json, which every build publishes.
@@ -30,10 +30,18 @@ LEDGER_CSS = """
 .lgr .x{background:none;border:1px solid var(--line);color:var(--dim);
   border-radius:6px;padding:5px 9px;font-size:11px;cursor:pointer}
 .lgr .x:hover{color:var(--loss);border-color:var(--loss)}
+.lgr .settle{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+.lgr .result{border:1px solid var(--line);background:var(--bg);border-radius:7px;
+  padding:7px 11px;font-size:11px;font-weight:650;cursor:pointer}
+.lgr .result.win{color:var(--win);border-color:rgba(46,204,113,.45)}
+.lgr .result.loss{color:var(--loss);border-color:rgba(231,76,60,.45)}
+.lgr .result.push{color:var(--dim)}
+.lgr .result:hover{background:var(--line)}
 .addbtn{background:rgba(240,180,41,.12);border:1px solid rgba(240,180,41,.45);
   color:var(--gold);border-radius:7px;padding:8px 12px;font-size:12px;
   cursor:pointer;font-weight:600}
 .addbtn:hover{background:rgba(240,180,41,.22)}
+.addbtn:disabled{opacity:.45;cursor:not-allowed;background:var(--panel)}
 .addbtn.on{background:rgba(46,204,113,.15);border-color:rgba(46,204,113,.5);
   color:var(--win)}
 .tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
@@ -41,13 +49,36 @@ LEDGER_CSS = """
   padding:10px;margin-top:10px;font-size:11px;font-family:ui-monospace,monospace;
   color:var(--dim);max-height:170px;overflow:auto;white-space:pre-wrap;
   word-break:break-all}
+.manual{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+  padding:13px 15px;margin-top:12px}
+.manual h3{margin:0 0 4px;font-size:14px}
+.manual .fields{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-top:10px}
+.manual label{display:flex;flex-direction:column;gap:3px;color:var(--dim);
+  font-size:10px;text-transform:uppercase;letter-spacing:.07em}
+.manual input{background:var(--bg);border:1px solid var(--line);color:var(--ink);
+  border-radius:7px;padding:8px 9px;font-size:13px;min-width:110px}
+.manual input.pickin{min-width:220px}
+.manual input:focus{outline:none;border-color:var(--gold)}
 """
 
 LEDGER_HTML = """
 <section class=lgr>
   <h2>My ladder <span id=lgr-count style="color:var(--dim);font-weight:400"></span></h2>
+  <div class=sub style="margin:-4px 0 12px">Choose one bet at a time. Mark it
+    Win, Loss or Push when it settles; a win immediately advances the rung and
+    unlocks the next selection at the new stake.</div>
   <div class=grid id=lgr-stats></div>
   <div id=lgr-rows></div>
+  <div class=manual>
+    <h3>Use a different bet</h3>
+    <div class=sub>For a pick from your sportsbook that is not on the option board.</div>
+    <div class=fields>
+      <label>Selection<input class=pickin id=lgr-custom-pick placeholder="Team or selection"></label>
+      <label>American odds<input id=lgr-custom-am type=number step=1 placeholder="-171"></label>
+      <label>Stake<input id=lgr-custom-stake type=number step=.01 min=.01></label>
+      <button class=addbtn id=lgr-custom type=button>Select custom bet</button>
+    </div>
+  </div>
   <div class=tools>
     <button class=mini id=lgr-json type=button>Export JSON</button>
     <button class=mini id=lgr-csv type=button>Export CSV</button>
@@ -83,7 +114,7 @@ LEDGER_JS = r"""
   function reflow(){
     entries.sort(function(a,b){ return (a.added||'').localeCompare(b.added||''); });
     var rung=0, stake=CFG.base_stake, inc=CFG.stake_increment||0.01;
-    var net=0, cashed=0, bust=0;
+    var net=0, runningPL=0, cashed=0, bust=0;
     entries.forEach(function(e){
       var want = Math.floor(stake/inc+1e-9)*inc;
       if(!e.stake_edited) e.stake = want;
@@ -105,10 +136,15 @@ LEDGER_JS = r"""
       } else {
         e.returned = null; e.cashed_out=null;
       }
+      var pl = e.result==='win' ? e.returned-e.stake
+             : e.result==='loss' ? -e.stake : 0;
+      e.profit_loss = Math.round(pl*100)/100;
+      runningPL += pl;
       e.running_net = Math.round(net*100)/100;
+      e.running_profit_loss = Math.round(runningPL*100)/100;
     });
     return {rung:rung, stake:Math.floor(stake/inc+1e-9)*inc, net:net,
-            cashed:cashed, bust:bust};
+            profitLoss:Math.round(runningPL*100)/100, cashed:cashed, bust:bust};
   }
 
   // Self-settlement, same shape as the CLI's grade step.
@@ -134,15 +170,21 @@ LEDGER_JS = r"""
 
     var done = entries.filter(function(e){ return e.result==='win'||e.result==='loss'; });
     var w = done.filter(function(e){ return e.result==='win'; }).length;
+    var accuracy = done.length ? (w/done.length*100).toFixed(1)+'%' : '—';
     var stats = document.getElementById('lgr-stats');
     stats.innerHTML =
       card('Rung', st.rung+' / '+CFG.max_rung, 'gold') +
       card('Next stake', money(st.stake), '') +
-      card('Net', (st.net>=0?'+':'')+st.net.toFixed(2), st.net>0?'pos':st.net<0?'neg':'') +
-      card('Record', done.length? w+'-'+(done.length-w) : '—', '');
+      card('Right / wrong', done.length? w+' / '+(done.length-w) : '—', '') +
+      card('Accuracy', accuracy, '') +
+      card('Profit / loss', (st.profitLoss>=0?'+':'')+money(st.profitLoss),
+           st.profitLoss>0?'pos':st.profitLoss<0?'neg':'');
+
+    var customStake=document.getElementById('lgr-custom-stake');
+    if(customStake && document.activeElement!==customStake) customStake.value=st.stake.toFixed(2);
 
     if(!entries.length){
-      host.innerHTML='<div class=empty>No bets yet. Tap <b>+ Ledger</b> on a '+
+      host.innerHTML='<div class=empty>No bets yet. Tap <b>Select bet</b> on a '+
         'candidate above to start the ladder.</div>';
       return;
     }
@@ -150,6 +192,11 @@ LEDGER_JS = r"""
       var idx = entries.length-1-i;
       var pill = e.result ? '<span class="pill '+e.result+'">'+e.result+'</span>'
                           : '<span class="pill live">pending</span>';
+      var settle = e.result ? '' : '<div class=settle><span class=sub2>Settle:</span>'+
+        '<button class="result win" data-result="win" data-i="'+idx+'" type=button>Win</button>'+
+        '<button class="result loss" data-result="loss" data-i="'+idx+'" type=button>Loss</button>'+
+        '<button class="result push" data-result="push" data-i="'+idx+'" type=button>Push / void</button></div>';
+      var pl=e.profit_loss||0;
       return '<div class="row'+(e.result?'':' pend')+'">'+
         '<div class=top><span class=nm>R'+e.rung+' &middot; '+esc(e.pick)+'</span>'+
         '<span class=price>'+(e.american>=0?'+':'')+Math.round(e.american)+'</span></div>'+
@@ -162,9 +209,10 @@ LEDGER_JS = r"""
           '<span>&rarr; <b>'+money(e.to_return)+'</b></span>'+
           pill+
           '<button class=x data-del="'+idx+'" type=button>remove</button>'+
-          '<span style="margin-left:auto;color:var(--dim)">net '+
-          (e.running_net>=0?'+':'')+e.running_net.toFixed(2)+'</span>'+
-        '</div></div>';
+          '<span style="margin-left:auto;color:var(--dim)">P/L '+
+          (pl>=0?'+':'')+money(pl)+' &middot; total '+
+          (e.running_profit_loss>=0?'+':'')+money(e.running_profit_loss)+'</span>'+
+        '</div>'+settle+'</div>';
     }).join('');
 
     host.querySelectorAll('input.stk').forEach(function(el){
@@ -179,6 +227,13 @@ LEDGER_JS = r"""
         entries.splice(+el.dataset.del,1); save(entries); draw(); syncButtons();
       });
     });
+    host.querySelectorAll('button[data-result]').forEach(function(el){
+      el.addEventListener('click', function(){
+        var e=entries[+el.dataset.i]; if(!e || e.result) return;
+        e.result=el.dataset.result; e.settled_at=new Date().toISOString();
+        save(entries); draw(); syncButtons();
+      });
+    });
   }
 
   function card(k,v,cls){
@@ -187,15 +242,18 @@ LEDGER_JS = r"""
   }
 
   function has(c){ return entries.some(function(e){
-    return e.event_id ? (e.event_id===c.event_id && e.side===c.side)
+    return e.event_id ? (!e.result && e.event_id===c.event_id && e.side===c.side)
                       : (e.pick===c.pick && !e.result); }); }
+
+  function pending(){ return entries.find(function(e){ return !e.result; }); }
 
   function syncButtons(){
     CANDS.forEach(function(c,i){
       var b=document.getElementById('add'+i); if(!b) return;
-      var on=has(c);
+      var on=has(c), busy=!!pending();
       b.className='addbtn'+(on?' on':'');
-      b.textContent = on ? 'in ledger' : '+ Ledger';
+      b.disabled=busy&&!on;
+      b.textContent = on ? 'Selected' : busy ? 'Settle current first' : 'Select bet';
     });
   }
 
@@ -205,6 +263,8 @@ LEDGER_JS = r"""
       entries = entries.filter(function(e){
         return !(e.event_id===c.event_id && e.side===c.side && !e.result); });
     } else {
+      var active=pending();
+      if(active){ alert('Settle or remove '+active.pick+' before selecting another bet.'); return; }
       entries.push({id:'b'+Date.now()+'_'+i, added:new Date().toISOString(),
         event_id:c.event_id||'', league:c.league||'', matchup:c.matchup||'',
         pick:c.pick, side:c.side||'', decimal:decimal, american:d2a(decimal),
@@ -215,7 +275,8 @@ LEDGER_JS = r"""
 
   function toCSV(){
     var cols=['added','settled_at','league','matchup','pick','rung','decimal',
-              'american','stake','to_return','result','returned','running_net'];
+              'american','stake','to_return','result','returned','profit_loss',
+              'running_profit_loss','running_net'];
     var out=[cols.join(',')];
     entries.forEach(function(e){
       out.push(cols.map(function(k){
@@ -243,14 +304,42 @@ LEDGER_JS = r"""
   document.getElementById('lgr-clear').onclick=function(){
     if(confirm('Delete all '+entries.length+' ledger entries on this device?')){
       entries=[]; save(entries); draw(); syncButtons(); } };
+
+  document.getElementById('lgr-custom').onclick=function(){
+    var active=pending();
+    if(active){ alert('Settle or remove '+active.pick+' before selecting another bet.'); return; }
+    var pick=document.getElementById('lgr-custom-pick').value.trim();
+    var am=parseFloat(document.getElementById('lgr-custom-am').value);
+    var stake=parseFloat(document.getElementById('lgr-custom-stake').value);
+    if(!pick){ alert('Enter the team or selection.'); return; }
+    if(!am || Math.abs(am)<100){ alert('Enter American odds such as -171.'); return; }
+    var dec=am>0 ? 1+am/100 : 1+100/Math.abs(am);
+    entries.push({id:'custom_'+Date.now(),added:new Date().toISOString(),event_id:'',
+      league:'manual',matchup:'',pick:pick,side:'',decimal:dec,american:am,
+      stake:stake>0?stake:0,stake_edited:stake>0,result:null});
+    document.getElementById('lgr-custom-pick').value='';
+    document.getElementById('lgr-custom-am').value='';
+    save(entries); draw(); syncButtons();
+  };
+
+  function signature(e){ return [(e.added||e.placed_at||'').slice(0,10),
+    (e.pick||'').toLowerCase(),Number(e.stake||0).toFixed(2)].join('|'); }
+  function mergeRepoHistory(){
+    var ids={}, sigs={}; entries.forEach(function(e){ ids[e.id]=1; sigs[signature(e)]=1; });
+    var added=0;
+    (D.history||[]).forEach(function(h){
+      if(!ids[h.id] && !sigs[signature(h)]){ entries.push(h); ids[h.id]=1;
+        sigs[signature(h)]=1; added++; }
+    });
+    if(added) save(entries);
+    return added;
+  }
   // Pull the committed state/ladder.json history into this browser, merging by
   // id so nothing duplicates. This is how a new device catches up.
   document.getElementById('lgr-seed').onclick=function(){
     var hist=(D.history||[]);
     if(!hist.length){ alert('No settled bets in the repo state yet.'); return; }
-    var seen={}; entries.forEach(function(e){ seen[e.id]=1; });
-    var added=0;
-    hist.forEach(function(h){ if(!seen[h.id]){ entries.push(h); added++; } });
+    var added=mergeRepoHistory();
     save(entries); draw(); syncButtons();
     alert('Merged '+added+' from the repo, skipped '+(hist.length-added)+
           ' already here.');
@@ -267,6 +356,10 @@ LEDGER_JS = r"""
     alert('Merged '+added+' new '+(added===1?'entry':'entries')+
           ', skipped '+(inc.length-added)+' already here.');
   };
+
+  // The committed record is authoritative and is merged on every load. Local
+  // entries remain available, while the same real bet is never duplicated.
+  mergeRepoHistory();
 
   fetch('data/results.json',{cache:'no-store'})
     .then(function(r){ return r.ok ? r.json() : {}; })

@@ -1,9 +1,14 @@
 name: Ladder
 
 on:
+  push:
+    branches: [main]
   schedule:
-    # 14:00 UTC = 10:00 ET. Late games from last night are final by now.
+    # Refresh the option board through the day (10:00, 14:00 and 18:00 ET
+    # during daylight time). A settled winner can therefore expose later games.
     - cron: "0 14 * * *"
+    - cron: "0 18 * * *"
+    - cron: "0 22 * * *"
   workflow_dispatch:
     inputs:
       settle_as:
@@ -12,9 +17,9 @@ on:
         options: [auto, win, loss, push, skip]
         default: auto
       place:
-        description: "Place today's top pick"
+        description: "Place the top pick instead of letting me choose"
         type: boolean
-        default: true
+        default: false
 
 permissions:
   contents: write
@@ -34,24 +39,25 @@ jobs:
       - uses: actions/setup-python@v6
         with: { python-version: "3.12" }
 
-      # ORDER MATTERS: settle yesterday before placing today, or the
-      # one-pending-bet rule blocks the new pick.
-      - name: 1. Settle yesterday's bet
+      - name: 1. Settle any finished pending bet
         if: inputs.settle_as != 'skip'
         run: python -m ladder settle "${{ inputs.settle_as || 'auto' }}"
 
-      - name: 2. Place today's pick
-        if: inputs.place != false
-        run: NO_COLOR=1 python -m ladder pick --top 5 --place
+      # Scheduled runs publish choices. They do not silently choose a wager.
+      - name: 2. Optional automatic placement
+        if: inputs.place == true
+        run: NO_COLOR=1 python -m ladder pick --top 10 --place
 
-      - name: 3. Build report
+      - name: 3. Build option board and report
         run: |
-          { echo '```'; NO_COLOR=1 python -m ladder status; echo;
+          { echo '```'; NO_COLOR=1 python -m ladder pick --top 10; echo;
+            NO_COLOR=1 python -m ladder status; echo;
             NO_COLOR=1 python -m ladder ledger --limit 10; echo '```'; } > pick.md
           python -m ladder render --out docs/index.html
           cat pick.md
 
       - name: 4. Post to issue
+        if: github.event_name == 'workflow_dispatch'
         uses: actions/github-script@v7
         with:
           script: |

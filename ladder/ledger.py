@@ -20,13 +20,14 @@ FIELDS = [
     "placed_at", "settled_at", "league", "matchup", "pick", "rung",
     "screened_decimal", "decimal", "slippage", "closing_decimal", "clv",
     "american", "stake", "result", "returned", "cashed_out", "running_net",
+    "profit_loss", "running_profit_loss",
 ]
 
 
 def rows(state: dict) -> list[dict]:
     """Flatten history into ledger rows with a running net."""
     base = state.get("base_stake", 5.0)
-    out, net = [], 0.0
+    out, net, running_pl = [], 0.0, 0.0
     for h in state.get("history", []):
         if h.get("event") == "cash_out":
             net += h.get("banked", 0.0) - base
@@ -38,6 +39,7 @@ def rows(state: dict) -> list[dict]:
                 "stake": "", "result": "cashout", "returned": "",
                 "cashed_out": round(h.get("banked", 0.0), 2),
                 "running_net": round(net, 2),
+                "profit_loss": "", "running_profit_loss": round(running_pl, 2),
             })
             continue
 
@@ -48,6 +50,11 @@ def rows(state: dict) -> list[dict]:
             net -= base
         elif h.get("cashed_out"):
             net += h["cashed_out"] - base
+
+        stake = float(h.get("stake") or 0.0)
+        returned = float(h.get("returned") or 0.0)
+        profit_loss = (returned - stake) if res in ("win", "loss") else 0.0
+        running_pl += profit_loss
 
         out.append({
             "placed_at": h.get("placed_at", ""),
@@ -67,6 +74,8 @@ def rows(state: dict) -> list[dict]:
             "returned": h.get("returned", ""),
             "cashed_out": h.get("cashed_out", ""),
             "running_net": round(net, 2),
+            "profit_loss": round(profit_loss, 2),
+            "running_profit_loss": round(running_pl, 2),
         })
     return out
 
@@ -87,6 +96,7 @@ def summary(state: dict) -> dict:
         "win_rate": (len(wins) / len(bets)) if bets else 0.0,
         "total_staked": round(staked, 2),
         "net": r[-1]["running_net"] if r else 0.0,
+        "profit_loss": round(sum(float(x.get("profit_loss") or 0) for x in bets), 2),
         "runs_cashed": state.get("runs_completed", 0),
         "runs_busted": state.get("runs_busted", 0),
         "avg_slippage": round(sum(slips) / len(slips), 4) if slips else None,

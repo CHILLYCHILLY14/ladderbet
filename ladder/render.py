@@ -385,9 +385,12 @@ def render(state: dict, candidates: list[dict], warnings: list[str],
          f"<title>Ladder — rung {rung}</title><style>{CSS}</style></head><body>"]
 
     p.append("<h1>Ladder</h1>")
-    p.append(f"<div class=sub>{_esc(now)} · window "
+    low_am = decimal_to_american(window[0])
+    high_am = decimal_to_american(window[1])
+    p.append(f"<div class=sub>{_esc(now)} · favourite window "
              f"{window[0]:.2f}–{window[1]:.3f} decimal "
-             f"(-200 to -150) · {state.get('currency','CAD')}</div>")
+             f"({low_am:+.0f} to {high_am:+.0f}) · up to 10 choices · "
+             f"{state.get('currency','CAD')}</div>")
 
     p.append(f"<div class=hero><span class=rungnum>{rung}</span>"
              f"<span class=of>of {max_rung} rungs</span></div>")
@@ -399,7 +402,7 @@ def render(state: dict, candidates: list[dict], warnings: list[str],
              f"<div class='v gold'>{_money(nxt)}</div></div>")
     p.append(f"<div class=card><div class=k>New money at risk</div>"
              f"<div class=v>{_money(base)}</div></div>")
-    p.append(f"<div class=card><div class=k>Net</div>"
+    p.append(f"<div class=card><div class=k>Banked ladder net</div>"
              f"<div class='v {ncls}'>{net:+,.2f}</div></div>")
     p.append(f"<div class=card><div class=k>Cashed / busted</div>"
              f"<div class=v>{state.get('runs_completed',0)} / "
@@ -430,7 +433,7 @@ def render(state: dict, candidates: list[dict], warnings: list[str],
 
     p.append("<section><h2>Today's candidates</h2>")
     if candidates:
-        for i, c in enumerate(candidates[:5]):
+        for i, c in enumerate(candidates[:10]):
             fair = c.get("fair_prob", 0)
             top = " top" if i == 0 else ""
             cd = float(c.get("decimal") or 0) or 1.0
@@ -450,7 +453,7 @@ def render(state: dict, candidates: list[dict], warnings: list[str],
                 f"<label>Decimal<input id='de{i}' type='number' step='0.001' "
                 f"value='{cd:.4f}' inputmode='decimal'></label>"
                 f"<button class=mini id='reset{i}' type=button>reset</button>"
-                f"<button class=addbtn id='add{i}' type=button>+ Ledger</button>"
+                f"<button class=addbtn id='add{i}' type=button>Select bet</button>"
                 f"</div>"
                 f"<div class=meta style='color:var(--ink)' id='ret{i}'>"
                 f"stake {_money(nxt)} &rarr; <b>{_money(ret)}</b></div>"
@@ -466,33 +469,37 @@ def render(state: dict, candidates: list[dict], warnings: list[str],
                  "<b>No bet is a valid day.</b> The ladder holds; it does not reset."
                  "</div>")
     if candidates:
-        p.append("<div class=cmdbox><div class=k>Selected — tap a card to change"
+        p.append("<div class=cmdbox><div class=k>Preview — tap a card to change"
                  "</div><div class=cmdpick id=cmdpick></div>"
                  "<div class=cmdrow><code id=cmd></code>"
                  "<button class=mini id=copy type=button>copy</button></div>"
                  "<div class=k style='margin-top:8px;text-transform:none;"
-                 "letter-spacing:0'>Editing odds here only changes this page. "
-                 "Run the command to record it.</div></div>")
+                 "letter-spacing:0'>Use <b>Select bet</b> to put one option in "
+                 "your ladder, or run the command to commit it to the repo.</div></div>")
     p.append("</section>")
 
     if settled:
         rcls = "pos" if rate >= breakeven else "neg"
         p.append("<section><h2>Record</h2><div class=grid>")
-        p.append(f"<div class=card><div class=k>Win rate</div>"
-                 f"<div class='v {rcls}'>{rate:.1%}</div></div>")
-        p.append(f"<div class=card><div class=k>Break-even needed</div>"
-                 f"<div class=v>{breakeven:.1%}</div></div>")
-        p.append(f"<div class=card><div class=k>Bets settled</div>"
-                 f"<div class=v>{len(settled)}</div></div>")
-        p.append(f"<div class=card><div class=k>Best streak</div>"
-                 f"<div class='v gold'>{best}</div></div>")
-        p.append("</div>")
-
         try:
             from .ledger import summary as _sum
             lsum = _sum(state)
         except Exception:
             lsum = {}
+        pl = float(lsum.get("profit_loss", 0) or 0)
+        pl_cls = "pos" if pl > 0 else "neg" if pl < 0 else ""
+        p.append(f"<div class=card><div class=k>Right / wrong</div>"
+                 f"<div class='v gold'>{wins} / {len(settled)-wins}</div></div>")
+        p.append(f"<div class=card><div class=k>Accuracy</div>"
+                 f"<div class='v {rcls}'>{rate:.1%}</div></div>")
+        p.append(f"<div class=card><div class=k>Bet profit / loss</div>"
+                 f"<div class='v {pl_cls}'>{pl:+,.2f}</div></div>")
+        p.append(f"<div class=card><div class=k>Break-even needed</div>"
+                 f"<div class=v>{breakeven:.1%}</div></div>")
+        p.append(f"<div class=card><div class=k>Best streak</div>"
+                 f"<div class='v gold'>{best}</div></div>")
+        p.append("</div>")
+
         if lsum.get("avg_clv") is not None or lsum.get("avg_slippage") is not None:
             p.append("<div class=grid>")
             if lsum.get("avg_clv") is not None:
@@ -523,25 +530,26 @@ def render(state: dict, candidates: list[dict], warnings: list[str],
         p.append(f"<section><h2>Bet history — {len(settled)} settled</h2>"
                  "<div class=scroll><table><tr><th>Date</th><th>Pick</th>"
                  "<th>R</th><th>Price</th><th>Stake</th><th>Return</th>"
-                 "<th>CLV</th><th>Net</th><th></th></tr>")
+                 "<th>P/L</th><th>Total</th><th></th></tr>")
         for r in reversed(lrows):
             res = r.get("result", "")
             cls = res if res in ("win", "loss", "push") else "push"
-            clv = r.get("clv")
-            clvs = f"{float(clv):+.3f}" if clv not in ("", None) else "—"
             dec = r.get("decimal")
             price = f"{float(dec):.3f}" if dec not in ("", None) else "—"
             stake = _money(float(r["stake"])) if r.get("stake") not in ("", None) else "—"
             ret = _money(float(r["returned"])) if r.get("returned") not in ("", None) else "—"
-            net = r.get("running_net", 0)
-            ncol = "pos" if net > 0 else "neg" if net < 0 else ""
+            row_pl = float(r.get("profit_loss") or 0)
+            total_pl = float(r.get("running_profit_loss") or 0)
+            pcol = "pos" if row_pl > 0 else "neg" if row_pl < 0 else ""
+            tcol = "pos" if total_pl > 0 else "neg" if total_pl < 0 else ""
             p.append(f"<tr><td>{_esc(str(r.get('settled_at',''))[:10])}</td>"
                      f"<td>{_esc(r.get('pick'))}<div class=k "
                      f"style='text-transform:none;letter-spacing:0'>"
                      f"{_esc(r.get('league',''))} {_esc(r.get('matchup',''))}</div></td>"
                      f"<td>{r.get('rung','')}</td><td>{price}</td>"
-                     f"<td>{stake}</td><td>{ret}</td><td>{clvs}</td>"
-                     f"<td class={ncol}>{net:+.2f}</td>"
+                     f"<td>{stake}</td><td>{ret}</td>"
+                     f"<td class={pcol}>{row_pl:+.2f}</td>"
+                     f"<td class={tcol}>{total_pl:+.2f}</td>"
                      f"<td><span class='pill {cls}'>{res}</span></td></tr>")
         p.append("</table></div></section>")
 
@@ -570,7 +578,7 @@ def render(state: dict, candidates: list[dict], warnings: list[str],
                         "side": c.get("side") or "",
                         "league": c.get("league") or "",
                         "matchup": c.get("matchup") or ""}
-                       for c in candidates[:5]],
+                       for c in candidates[:10]],
         "history": [{"id": "repo_" + str(h.get("placed_at", ""))[:19] + "_"
                            + str(h.get("pick", ""))[:12],
                      "added": h.get("placed_at", ""),

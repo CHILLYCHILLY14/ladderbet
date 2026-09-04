@@ -282,23 +282,26 @@ def cmd_ledger(args, cfg):
     print()
     print(tui.rule("LEDGER"))
     print(tui.dim(f"  {'date':<11}{'pick':<22}{'R':>2} {'price':>7}"
-                  f"{'stake':>9}{'ret':>9}{'clv':>7}{'net':>9}"))
+                  f"{'stake':>9}{'ret':>9}{'P/L':>9}{'total':>9}"))
     for r in rows[-args.limit:]:
         res = r["result"]
         col = tui.green if res in ("win", "cashout") else tui.red if res == "loss" else tui.dim
-        clv = f"{float(r['clv']):+.3f}" if r["clv"] not in ("", None) else "  —  "
         price = f"{float(r['decimal']):.3f}" if r["decimal"] not in ("", None) else "  —  "
         stake = f"{float(r['stake']):.2f}" if r["stake"] not in ("", None) else "—"
         ret = f"{float(r['returned']):.2f}" if r["returned"] not in ("", None) else "—"
+        pl = f"{float(r['profit_loss']):+.2f}" if r["profit_loss"] not in ("", None) else "—"
+        total = f"{float(r['running_profit_loss']):+.2f}"
         print(f"  {str(r['settled_at'])[:10]:<11}{col(r['pick'][:21]):<22}"
-              f"{r['rung']!s:>2} {price:>7}{stake:>9}{ret:>9}{clv:>7}"
-              f"{r['running_net']:>+9.2f}")
+              f"{r['rung']!s:>2} {price:>7}{stake:>9}{ret:>9}{pl:>9}{total:>9}")
 
     s = ldg.summary(st)
     print()
     print(tui.rule("SUMMARY"))
     print(f"  {s['bets']} bets   {s['wins']}W-{s['losses']}L   "
           f"win rate {s['win_rate']:.1%}   staked ${s['total_staked']:,.2f}")
+    plc = tui.green if s["profit_loss"] > 0 else tui.red if s["profit_loss"] < 0 else tui.dim
+    pl_text = f"${s['profit_loss']:+,.2f}"
+    print(f"  bet profit/loss {plc(pl_text)}")
     print(f"  runs cashed {s['runs_cashed']}   busted {s['runs_busted']}   "
           f"net ${s['net']:+,.2f}")
     if s["avg_slippage"] is not None:
@@ -487,9 +490,13 @@ def cmd_status(args, cfg):
         w = sum(1 for h in settled if h["result"] == "win")
         rate, be = w / len(settled), 1.0 / d
         rc = tui.green if rate >= be else tui.red
+        s = ldg.summary(lad.__dict__)
+        plc = tui.green if s["profit_loss"] > 0 else tui.red if s["profit_loss"] < 0 else tui.dim
+        pl_text = f"${s['profit_loss']:+,.2f}"
         print(f"  {tui.dim('record')} {w}-{len(settled)-w}"
               f"   {tui.dim('win rate')} {rc('%.1f%%' % (rate*100))}"
-              f"   {tui.dim('need')} {be:.1%}")
+              f"   {tui.dim('need')} {be:.1%}"
+              f"   {tui.dim('P/L')} {plc(pl_text)}")
 
     if lad.pending:
         p = lad.pending
