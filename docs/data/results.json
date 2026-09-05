@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-05T14:12:46+00:00",
+ "generated": "2026-09-05T17:42:24+00:00",
  "games": {
   "401877193": {
    "completed": true,
@@ -420,6 +420,41 @@
    "league": "epl",
    "date": "2026-09-05",
    "score": "BOU 2 @ NEW 2"
+  },
+  "401879311": {
+   "completed": true,
+   "winner": "draw",
+   "league": "epl",
+   "date": "2026-09-05",
+   "score": "SUN 1 @ BRE 1"
+  },
+  "401879290": {
+   "completed": true,
+   "winner": "draw",
+   "league": "epl",
+   "date": "2026-09-05",
+   "score": "LEE 1 @ BHA 1"
+  },
+  "401879289": {
+   "completed": true,
+   "winner": "away",
+   "league": "epl",
+   "date": "2026-09-05",
+   "score": "CRY 3 @ FUL 2"
+  },
+  "401879287": {
+   "completed": true,
+   "winner": "home",
+   "league": "epl",
+   "date": "2026-09-05",
+   "score": "COV 0 @ MNC 1"
+  },
+  "401878780": {
+   "completed": true,
+   "winner": "draw",
+   "league": "epl",
+   "date": "2026-09-05",
+   "score": "TOT 0 @ NFO 0"
   },
   "401879288": {
    "completed": true,
