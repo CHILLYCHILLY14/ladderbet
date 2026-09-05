@@ -577,7 +577,8 @@ def render(state: dict, candidates: list[dict], warnings: list[str],
                         "event_id": str(c.get("event_id") or ""),
                         "side": c.get("side") or "",
                         "league": c.get("league") or "",
-                        "matchup": c.get("matchup") or ""}
+                        "matchup": c.get("matchup") or "",
+                        "start_utc": c.get("start_utc") or ""}
                        for c in candidates[:10]],
         "history": [{"id": "repo_" + str(h.get("placed_at", ""))[:19] + "_"
                            + str(h.get("pick", ""))[:12],
@@ -587,6 +588,8 @@ def render(state: dict, candidates: list[dict], warnings: list[str],
                      "side": h.get("side") or "",
                      "league": h.get("league") or "",
                      "matchup": h.get("matchup") or "",
+                     "start_utc": h.get("start_utc") or "",
+                     "score": h.get("score") or "",
                      "pick": h.get("pick", ""),
                      "decimal": float(h.get("decimal") or 1.5),
                      "american": float(h.get("american") or 0),

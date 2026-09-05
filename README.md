@@ -7,7 +7,7 @@ return forward and resets on a loss. Finished games are graded automatically
 from ESPN's final scores.
 
 Ships an HTML dashboard (auto-published to GitHub Pages) and coloured terminal
-output. Python standard library only — 79 tests, no dependencies.
+output. Python standard library only — 82 tests, no dependencies.
 
 ![rung](docs/badge.svg)
 
@@ -105,6 +105,10 @@ What you can do on the page:
   the other choices lock until you mark it Win, Loss or Push (or remove it).
 - **Keep climbing the same day.** A win immediately advances the rung, updates
   the next stake, and unlocks all later options. There is no one-bet-per-day lock.
+- **Settle automatically.** While the page is open it checks the published
+  result feed and the selected event's ESPN scoreboard every minute. **Check
+  now** forces an immediate refresh. A final win advances; a final loss resets
+  the ladder to rung 0 and $5.
 - **Enter a custom bet.** If your sportsbook has a choice missing from the feed,
   enter its selection, American odds and stake directly under My ladder.
 - **Copy the command.** The box shows the exact `ladder place N --price X` line
@@ -116,12 +120,15 @@ same selection into the repo state.
 
 ## The repo ships mid-ladder
 
-`state/ladder.json` contains the -167 Yankees winner from 2 September and your
--171 Pirates winner from 3 September. The Pirates bet staked $7.99 and returned
-$12.66, so the live ladder is now **rung 2 with $12.66 next**.
+`state/ladder.json` contains the -167 Yankees winner from 2 September, the -171
+Pirates winner from 3 September, and the -195 Liverpool winner from 4 September.
+Liverpool staked $12.66 and returned $19.15, so the live ladder is now **rung 3
+with $19.15 next** (3–0, +$14.15 bet profit/loss).
 
 Committed history now merges into the browser automatically without duplicating
-the same real bet. **Load repo history** remains as a manual refresh control.
+the same real bet. If the matching browser entry is still pending, the committed
+result updates it in place so it cannot hold the ladder back. **Load repo
+history** remains as a manual refresh control.
 
 ### Staircase now uses real stakes
 
@@ -137,8 +144,9 @@ Modelled on `mlb-edge-lab`'s My Ledger, adapted to a ladder.
 
 Tap **Select bet** on any candidate and it lands at that price — including any
 price you typed into the odds box — with the rung's stake prefilled. Tap the
-stake to change it if you bet a different number. Mark it Win, Loss or Push as
-soon as it settles, or let the results feed grade it. Every build publishes
+stake to change it if you bet a different number. Leave the page open and it
+checks the selected game's official ESPN result every minute, or press **Check
+now**. Manual Win, Loss and Push remain as fallbacks. Every build also publishes
 `docs/data/results.json` with finished games for automatic settlement.
 
 The one real difference from a flat bet ledger: **a ladder is sequential.**
@@ -435,6 +443,11 @@ books -$5 against your net. Both show up in `ladder ledger`.
 rolls forward — a game that finished last night has often already dropped out
 of it. It now looks the game up by **its own start date**, then sweeps a couple
 of days either side before giving up.
+
+The browser had a second failure: it fetched `results.json` only once at page
+load, and when committed history matched a local pending bet it skipped the row
+instead of applying the result. It now polls every minute, checks that exact
+event directly, and reconciles a committed win/loss into the matching local row.
 
 ## Automation
 

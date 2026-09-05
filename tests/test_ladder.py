@@ -613,7 +613,8 @@ def _page(cands, lad=None):
 
 CAND = {"pick": "Milwaukee Brewers", "decimal": 1.633, "american": -158,
         "fair_prob": 0.586, "league": "mlb", "matchup": "MIL @ CHC",
-        "hold": 0.045, "starts_in_h": 2.6}
+        "hold": 0.045, "starts_in_h": 2.6,
+        "start_utc": "2026-09-05T20:00:00Z"}
 
 
 def test_each_candidate_gets_editable_odds_inputs():
@@ -692,12 +693,23 @@ def test_candidates_carry_identity_for_self_settlement():
     c = data["candidates"][0]
     assert c["event_id"] == "401999" and c["side"] == "home"
     assert c["league"] == "mlb" and c["matchup"] == "MIL @ CHC"
+    assert c["start_utc"] == "2026-09-05T20:00:00Z"
 
 
 def test_ledger_fetches_results_feed():
     doc = _page([CAND])
     assert "data/results.json" in doc
     assert "localStorage" in doc and "ladder.ledger.v1" in doc
+
+
+def test_ledger_continuously_checks_and_reconciles_settlement():
+    doc = _page([CAND])
+    assert "setInterval(refreshResults,POLL_MS)" in doc
+    assert "POLL_MS=60000" in doc
+    assert "checkPendingAtESPN" in doc
+    assert "id=lgr-check" in doc and "Check now" in doc
+    assert "h.result && !local.result" in doc
+    assert "advanced to rung" in doc and "restarted at rung 0" in doc
 
 
 def test_ledger_reflow_matches_python_ladder():
@@ -780,25 +792,26 @@ def test_results_json_shape():
 
 
 # ---------- seeded state ----------
-def test_shipped_state_includes_pirates_win_and_is_on_rung_two():
-    """Yankees then Pirates won, so the next live stake is $12.66."""
+def test_shipped_state_includes_liverpool_win_and_is_on_rung_three():
+    """Yankees, Pirates and Liverpool won; the next live stake is $19.15."""
     import json as j
     from pathlib import Path
     p = Path(__file__).parent.parent / "state" / "ladder.json"
     assert p.exists(), "state/ladder.json should ship seeded"
     d = j.loads(p.read_text())
-    assert d["rung"] == 2
-    assert d["stake"] == 12.66
+    assert d["rung"] == 3
+    assert d["stake"] == 19.15
     assert d["max_rung"] == 10
     assert d["one_bet_per_day"] is False
     assert d["pending"] is None
-    assert len(d["history"]) == 2
-    h = d["history"][1]
+    assert len(d["history"]) == 3
+    h = d["history"][2]
     assert h["result"] == "win"
-    assert h["pick"] == "Pittsburgh Pirates"
-    assert h["event_id"] == "401816789"
-    assert h["stake"] == 7.99 and h["returned"] == 12.66
-    assert h["american"] == -171.0
+    assert h["pick"] == "Liverpool"
+    assert h["event_id"] == "401879288"
+    assert h["side"] == "away" and h["score"] == "LIV 2 @ IPS 0"
+    assert h["stake"] == 12.66 and h["returned"] == 19.15
+    assert h["american"] == -195.0
     assert d["net"] == 0.0            # nothing banked until a cash-out or bust
 
 
@@ -809,14 +822,14 @@ def test_rounded_decimal_would_give_the_wrong_stake():
     assert round(5 * american_to_decimal(-167), 2) == 7.99
 
 
-def test_next_stake_from_shipped_state_is_1266():
+def test_next_stake_from_shipped_state_is_1915():
     import json as j
     from pathlib import Path
     p = Path(__file__).parent.parent / "state" / "ladder.json"
     lad = Ladder(**{k: v for k, v in j.loads(p.read_text()).items()
                     if k in Ladder.__dataclass_fields__})
-    assert lad.next_stake() == 12.66
-    assert lad.rung == 2
+    assert lad.next_stake() == 19.15
+    assert lad.rung == 3
 
 
 def test_repo_history_is_embedded_for_browser_seeding():

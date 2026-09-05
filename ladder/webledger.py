@@ -37,6 +37,11 @@ LEDGER_CSS = """
 .lgr .result.loss{color:var(--loss);border-color:rgba(231,76,60,.45)}
 .lgr .result.push{color:var(--dim)}
 .lgr .result:hover{background:var(--line)}
+.lgr .sync{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  background:var(--panel);border:1px solid var(--line);border-radius:9px;
+  padding:9px 11px;margin:-3px 0 12px;color:var(--dim);font-size:12px}
+.lgr .sync.win{border-color:rgba(46,204,113,.45);color:var(--win)}
+.lgr .sync.loss{border-color:rgba(231,76,60,.45);color:var(--loss)}
 .addbtn{background:rgba(240,180,41,.12);border:1px solid rgba(240,180,41,.45);
   color:var(--gold);border-radius:7px;padding:8px 12px;font-size:12px;
   cursor:pointer;font-weight:600}
@@ -65,8 +70,10 @@ LEDGER_HTML = """
 <section class=lgr>
   <h2>My ladder <span id=lgr-count style="color:var(--dim);font-weight:400"></span></h2>
   <div class=sub style="margin:-4px 0 12px">Choose one bet at a time. Mark it
-    Win, Loss or Push when it settles; a win immediately advances the rung and
-    unlocks the next selection at the new stake.</div>
+    Win, Loss or Push yourself, or leave the page open and it will check the
+    official result every minute. Win advances; loss restarts at rung 0.</div>
+  <div class=sync id=lgr-sync><span id=lgr-sync-text>Checking results…</span>
+    <button class=mini id=lgr-check type=button>Check now</button></div>
   <div class=grid id=lgr-stats></div>
   <div id=lgr-rows></div>
   <div class=manual>
@@ -97,7 +104,11 @@ LEDGER_HTML = """
 LEDGER_JS = r"""
 <script>
 (function(){
-  var KEY='ladder.ledger.v1', D=null, RESULTS={};
+  var KEY='ladder.ledger.v1', D=null, RESULTS={}, POLL_MS=60000;
+  var ESPN_PATH={nfl:'football/nfl',ncaaf:'football/college-football',
+    mlb:'baseball/mlb',nba:'basketball/nba',wnba:'basketball/wnba',
+    ncaab:'basketball/mens-college-basketball',nhl:'hockey/nhl',
+    mls:'soccer/usa.1',epl:'soccer/eng.1',ucl:'soccer/uefa.champions'};
   try{ D=JSON.parse(document.getElementById('ladder-data').textContent); }catch(e){ return; }
   var CFG=D.state, CANDS=D.candidates;
 
@@ -147,19 +158,104 @@ LEDGER_JS = r"""
             profitLoss:Math.round(runningPL*100)/100, cashed:cashed, bust:bust};
   }
 
+  function settleFrom(e,r){
+    var res = (r.winner === e.side) ? 'win'
+            : (r.winner === 'draw' ? (e.side==='draw'?'win':'loss') : 'loss');
+    e.result = res; e.settled_at = r.date || new Date().toISOString().slice(0,10);
+    e.score = r.score || '';
+    return {pick:e.pick,result:res};
+  }
+
   // Self-settlement, same shape as the CLI's grade step.
   function autoSettle(){
-    var changed=false;
+    var settled=[];
     entries.forEach(function(e){
       if(e.result || !e.event_id) return;
       var r = RESULTS[e.event_id];
       if(!r || !r.completed) return;
-      var res = (r.winner === e.side) ? 'win'
-              : (r.winner === 'draw' ? (e.side==='draw'?'win':'loss') : 'loss');
-      e.result = res; e.settled_at = r.date || new Date().toISOString().slice(0,10);
-      e.score = r.score || ''; changed=true;
+      settled.push(settleFrom(e,r));
     });
-    if(changed) save(entries);
+    if(settled.length) save(entries);
+    return settled;
+  }
+
+  function resultFromESPN(payload,e){
+    var ev=(payload.events||[]).find(function(x){ return String(x.id)===String(e.event_id); });
+    if(!ev) return null;
+    var comp=(ev.competitions||[])[0]||{};
+    var typ=((comp.status||{}).type)||((ev.status||{}).type)||{};
+    if(!typ.completed && typ.state!=='post') return null;
+    var home=null, away=null;
+    (comp.competitors||[]).forEach(function(c){
+      if(c.homeAway==='home') home=c; else if(c.homeAway==='away') away=c; });
+    if(!home || !away) return null;
+    var winner=home.winner?'home':away.winner?'away':null;
+    if(!winner && Number(home.score)===Number(away.score)) winner='draw';
+    if(!winner) return null;
+    var ha=((home.team||{}).abbreviation)||'HOME';
+    var aa=((away.team||{}).abbreviation)||'AWAY';
+    return {completed:true,winner:winner,date:(ev.date||'').slice(0,10),
+      league:e.league,score:aa+' '+away.score+' @ '+ha+' '+home.score};
+  }
+
+  // Browser selections live only on this device, so check their event directly.
+  // The published results file remains a fallback if ESPN blocks a browser call.
+  function checkPendingAtESPN(){
+    var e=pending(), path=e&&ESPN_PATH[e.league];
+    if(!e || !e.event_id || !path) return Promise.resolve([]);
+    var date=(e.start_utc||e.added||'').slice(0,10).replace(/-/g,'');
+    var url='https://site.api.espn.com/apis/site/v2/sports/'+path+'/scoreboard';
+    if(date) url+='?dates='+date;
+    return fetch(url,{cache:'no-store'}).then(function(r){
+      if(!r.ok) throw new Error('scoreboard '+r.status); return r.json();
+    }).then(function(j){
+      var result=resultFromESPN(j,e);
+      if(result) RESULTS[e.event_id]=result;
+      return autoSettle();
+    });
+  }
+
+  function syncMessage(settled){
+    var box=document.getElementById('lgr-sync');
+    var label=document.getElementById('lgr-sync-text');
+    var st=reflow(), active=pending();
+    box.className='sync';
+    if(settled.length){
+      var x=settled[settled.length-1];
+      if(x.result==='win'){
+        box.className='sync win';
+        label.textContent=x.pick+' won — advanced to rung '+st.rung+
+          '. Next stake '+money(st.stake)+'.';
+      } else if(x.result==='loss'){
+        box.className='sync loss';
+        label.textContent=x.pick+' lost — ladder restarted at rung 0. Next stake '+
+          money(CFG.base_stake)+'.';
+      } else label.textContent=x.pick+' was void — rung unchanged.';
+    } else if(active){
+      label.textContent='Auto-settlement active — checking '+active.pick+
+        ' every minute. Last check '+new Date().toLocaleTimeString()+'.';
+    } else {
+      label.textContent='No bet pending — select the next rung at '+money(st.stake)+'.';
+    }
+  }
+
+  function refreshResults(){
+    var label=document.getElementById('lgr-sync-text');
+    label.textContent='Checking official results…';
+    return fetch('data/results.json?t='+Date.now(),{cache:'no-store'})
+      .then(function(r){ return r.ok ? r.json() : {}; })
+      .catch(function(){ return {}; })
+      .then(function(j){
+        RESULTS=j.games||RESULTS;
+        var settled=autoSettle();
+        if(settled.length) return settled;
+        return checkPendingAtESPN().catch(function(){ return []; });
+      }).then(function(settled){
+        draw(); syncButtons(); syncMessage(settled); return settled;
+      }).catch(function(){
+        draw(); syncButtons();
+        label.textContent='Could not reach the score feed. Use Check now or settle manually.';
+      });
   }
 
   function draw(){
@@ -232,6 +328,7 @@ LEDGER_JS = r"""
         var e=entries[+el.dataset.i]; if(!e || e.result) return;
         e.result=el.dataset.result; e.settled_at=new Date().toISOString();
         save(entries); draw(); syncButtons();
+        syncMessage([{pick:e.pick,result:e.result}]);
       });
     });
   }
@@ -251,9 +348,11 @@ LEDGER_JS = r"""
     CANDS.forEach(function(c,i){
       var b=document.getElementById('add'+i); if(!b) return;
       var on=has(c), busy=!!pending();
+      var finished=!!(c.event_id && RESULTS[c.event_id] && RESULTS[c.event_id].completed);
       b.className='addbtn'+(on?' on':'');
-      b.disabled=busy&&!on;
-      b.textContent = on ? 'Selected' : busy ? 'Settle current first' : 'Select bet';
+      b.disabled=finished || (busy&&!on);
+      b.textContent = finished ? 'Finished' : on ? 'Selected'
+                    : busy ? 'Settle current first' : 'Select bet';
     });
   }
 
@@ -267,10 +366,11 @@ LEDGER_JS = r"""
       if(active){ alert('Settle or remove '+active.pick+' before selecting another bet.'); return; }
       entries.push({id:'b'+Date.now()+'_'+i, added:new Date().toISOString(),
         event_id:c.event_id||'', league:c.league||'', matchup:c.matchup||'',
-        pick:c.pick, side:c.side||'', decimal:decimal, american:d2a(decimal),
+        start_utc:c.start_utc||'', pick:c.pick, side:c.side||'',
+        decimal:decimal, american:d2a(decimal),
         stake:0, stake_edited:false, result:null});
     }
-    save(entries); draw(); syncButtons();
+    save(entries); draw(); syncButtons(); syncMessage([]);
   };
 
   function toCSV(){
@@ -319,30 +419,41 @@ LEDGER_JS = r"""
       stake:stake>0?stake:0,stake_edited:stake>0,result:null});
     document.getElementById('lgr-custom-pick').value='';
     document.getElementById('lgr-custom-am').value='';
-    save(entries); draw(); syncButtons();
+    save(entries); draw(); syncButtons(); syncMessage([]);
   };
 
   function signature(e){ return [(e.added||e.placed_at||'').slice(0,10),
     (e.pick||'').toLowerCase(),Number(e.stake||0).toFixed(2)].join('|'); }
+  function eventKey(e){ return e.event_id ? String(e.event_id)+'|'+(e.side||'') : ''; }
   function mergeRepoHistory(){
-    var ids={}, sigs={}; entries.forEach(function(e){ ids[e.id]=1; sigs[signature(e)]=1; });
-    var added=0;
+    var ids={}, sigs={}, events={}; entries.forEach(function(e){
+      ids[e.id]=e; sigs[signature(e)]=e; if(eventKey(e)) events[eventKey(e)]=e; });
+    var added=0, updated=0;
     (D.history||[]).forEach(function(h){
-      if(!ids[h.id] && !sigs[signature(h)]){ entries.push(h); ids[h.id]=1;
-        sigs[signature(h)]=1; added++; }
+      var local=ids[h.id] || events[eventKey(h)] || sigs[signature(h)];
+      if(local){
+        if(h.result && !local.result){
+          var keepId=local.id;
+          Object.keys(h).forEach(function(k){ local[k]=h[k]; });
+          local.id=keepId||h.id; updated++;
+        }
+      } else {
+        entries.push(h); ids[h.id]=h; sigs[signature(h)]=h;
+        if(eventKey(h)) events[eventKey(h)]=h; added++;
+      }
     });
-    if(added) save(entries);
-    return added;
+    if(added||updated) save(entries);
+    return {added:added,updated:updated};
   }
   // Pull the committed state/ladder.json history into this browser, merging by
   // id so nothing duplicates. This is how a new device catches up.
   document.getElementById('lgr-seed').onclick=function(){
     var hist=(D.history||[]);
     if(!hist.length){ alert('No settled bets in the repo state yet.'); return; }
-    var added=mergeRepoHistory();
+    var merged=mergeRepoHistory();
     save(entries); draw(); syncButtons();
-    alert('Merged '+added+' from the repo, skipped '+(hist.length-added)+
-          ' already here.');
+    alert('Added '+merged.added+' and updated '+merged.updated+
+          ' from the repo; '+(hist.length-merged.added-merged.updated)+' already current.');
   };
 
   document.getElementById('lgr-imp').onclick=function(){
@@ -360,13 +471,10 @@ LEDGER_JS = r"""
   // The committed record is authoritative and is merged on every load. Local
   // entries remain available, while the same real bet is never duplicated.
   mergeRepoHistory();
-
-  fetch('data/results.json',{cache:'no-store'})
-    .then(function(r){ return r.ok ? r.json() : {}; })
-    .then(function(j){ RESULTS=j.games||{}; autoSettle(); draw(); syncButtons(); })
-    .catch(function(){ draw(); syncButtons(); });
-
   draw(); syncButtons();
+  document.getElementById('lgr-check').onclick=refreshResults;
+  refreshResults();
+  setInterval(refreshResults,POLL_MS);
 })();
 </script>
 """

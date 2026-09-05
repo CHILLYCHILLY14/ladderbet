@@ -9,8 +9,8 @@
   "stop_loss_days": 30,
   "timezone": "America/Toronto",
   "halted": false,
-  "rung": 2,
-  "stake": 12.66,
+  "rung": 3,
+  "stake": 19.15,
   "pending": null,
   "history": [
     {
@@ -53,6 +53,27 @@
       "settled_at": "2026-09-03T19:30:00+00:00",
       "returned": 12.66,
       "score": "SF 2 @ PIT 5"
+    },
+    {
+      "pick": "Liverpool",
+      "decimal": 1.5128,
+      "american": -195.0,
+      "league": "epl",
+      "matchup": "Liverpool @ Ipswich Town",
+      "provider": "DraftKings",
+      "side": "away",
+      "event_id": "401879288",
+      "start_utc": "2026-09-04T19:00:00Z",
+      "placed_at": "2026-09-04T18:45:00+00:00",
+      "rung": 2,
+      "stake": 12.66,
+      "screened_decimal": 1.5128,
+      "slippage": 0.0,
+      "to_return": 19.15,
+      "result": "win",
+      "settled_at": "2026-09-04T21:00:00+00:00",
+      "returned": 19.15,
+      "score": "LIV 2 @ IPS 0"
     }
   ],
   "runs_completed": 0,
