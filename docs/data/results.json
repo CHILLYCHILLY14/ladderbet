@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-06T05:12:03+00:00",
+ "generated": "2026-09-06T06:16:52+00:00",
  "games": {
   "401816815": {
    "completed": true,
@@ -700,6 +700,48 @@
    "league": "ncaaf",
    "date": "2026-09-06",
    "score": "NAU 7 @ ARIZ 35"
+  },
+  "401860879": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-06",
+   "score": "PRST 20 @ SDSU 53"
+  },
+  "401856774": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-06",
+   "score": "MORG 7 @ ASU 70"
+  },
+  "401864497": {
+   "completed": true,
+   "winner": "away",
+   "league": "ncaaf",
+   "date": "2026-09-06",
+   "score": "UNLV 21 @ HAW 6"
+  },
+  "401864498": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-06",
+   "score": "CMU 7 @ UNM 38"
+  },
+  "401866411": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-06",
+   "score": "MVSU 0 @ SAC 52"
+  },
+  "401864432": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-06",
+   "score": "WKU 14 @ NEV 49"
   },
   "401858206": {
    "completed": true,
