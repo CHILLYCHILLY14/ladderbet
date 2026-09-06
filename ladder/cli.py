@@ -327,6 +327,10 @@ def cmd_render(args, cfg):
         horizon_hours=1e9 if args.mock else sel["horizon_hours"],
         max_hold=sel.get("max_hold", 0.10), date=args.date, fetch=fetch)
     ranked = [c.to_dict() for c in rank(cands)]
+    if not args.mock:
+        from . import accuracy
+        accuracy.update(Path(args.state).parent / "model_accuracy.json",
+                        Path(args.out).parent / "data/accuracy.json", ranked)
 
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)

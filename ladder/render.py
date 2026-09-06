@@ -603,6 +603,7 @@ def render(state: dict, candidates: list[dict], warnings: list[str],
     if candidates:
         p.append(INTERACTIVE)
     p.append(LEDGER_JS)
+    p.append('<section id="accuracy"><div data-model-accuracy></div></section><script src="model-accuracy.js"></script>')
     p.append("</body></html>")
     return "".join(p)
 
