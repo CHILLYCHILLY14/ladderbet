@@ -4,22 +4,17 @@ on:
   push:
     branches: [main]
   schedule:
-    # Refresh the option board through the day (10:00, 14:00 and 18:00 ET
-    # during daylight time). A settled winner can therefore expose later games.
-    - cron: "0 14 * * *"
-    - cron: "0 18 * * *"
-    - cron: "0 22 * * *"
+    # Check every hour. If the committed pending wager has finished, the first
+    # step grades it, advances on a win or resets on a loss, and the same run
+    # republishes the option board for the newly-active rung.
+    - cron: "0 * * * *"
   workflow_dispatch:
     inputs:
       settle_as:
-        description: "Force yesterday's result instead of auto-grading"
+        description: "Force the pending result instead of auto-grading"
         type: choice
         options: [auto, win, loss, push, skip]
         default: auto
-      place:
-        description: "Place the top pick instead of letting me choose"
-        type: boolean
-        default: false
 
 permissions:
   contents: write
@@ -43,17 +38,16 @@ jobs:
         if: inputs.settle_as != 'skip'
         run: python -m ladder settle "${{ inputs.settle_as || 'auto' }}"
 
-      # Scheduled runs publish choices. They do not silently choose a wager.
-      - name: 2. Optional automatic placement
-        if: inputs.place == true
-        run: NO_COLOR=1 python -m ladder pick --top 10 --place
+      - name: 2. Verify ladder progression
+        run: python -m unittest discover -s tests -p 'test_progression.py' -v
 
-      - name: 3. Build option board and report
+      - name: 3. Build next-rung option board and report
         run: |
           { echo '```'; NO_COLOR=1 python -m ladder pick --top 10; echo;
             NO_COLOR=1 python -m ladder status; echo;
             NO_COLOR=1 python -m ladder ledger --limit 10; echo '```'; } > pick.md
           python -m ladder render --out docs/index.html
+          python tools/patch_dashboard.py
           cat pick.md
 
       - name: 4. Post to issue
@@ -78,7 +72,8 @@ jobs:
           git config user.name  "ladder-bot"
           git config user.email "ladder-bot@users.noreply.github.com"
           git add state picks docs
-          git diff --staged --quiet || git commit -m "ladder: $(date -u +%F)"
+          git diff --staged --quiet || git commit -m "ladder: $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git pull --rebase --autostash origin ${{ github.ref_name }} || true
           git push
 
       - uses: actions/upload-pages-artifact@v3
@@ -87,6 +82,10 @@ jobs:
   deploy:
     needs: run
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.d.outputs.page_url }}
