@@ -9,8 +9,8 @@
   "stop_loss_days": 30,
   "timezone": "America/Toronto",
   "halted": false,
-  "rung": 3,
-  "stake": 19.15,
+  "rung": 4,
+  "stake": 27.66,
   "pending": null,
   "history": [
     {
@@ -74,6 +74,28 @@
       "settled_at": "2026-09-04T21:00:00+00:00",
       "returned": 19.15,
       "score": "LIV 2 @ IPS 0"
+    },
+    {
+      "pick": "Los Angeles Dodgers",
+      "decimal": 1.4444,
+      "american": -225.0,
+      "league": "mlb",
+      "matchup": "Washington Nationals @ Los Angeles Dodgers",
+      "provider": "manual",
+      "side": "home",
+      "event_id": "",
+      "start_utc": "2026-09-05T02:10:00Z",
+      "placed_at": "2026-09-05T02:10:00+00:00",
+      "rung": 3,
+      "stake": 19.15,
+      "screened_decimal": 1.4444,
+      "slippage": 0.0,
+      "to_return": 27.66,
+      "result": "win",
+      "settled_at": "2026-09-05T05:30:00+00:00",
+      "returned": 27.66,
+      "score": "WSH 3 @ LAD 5",
+      "note": "User-reported ladder result at -225; placement timestamp normalized to scheduled start."
     }
   ],
   "runs_completed": 0,
