@@ -8,8 +8,8 @@ accumulate over time:
   CLV       your price minus the closing price. The single best long-run
             indicator of whether you are picking well, because it is measured
             against the market's final opinion rather than one game's outcome.
-  net       real money in and out. New money at risk is `base_stake` per run,
-            so net moves by -base on a bust and by (banked - base) on a cashout.
+  net       actual wager profit/loss, realized when a run busts or cashes out.
+            Stake overrides and amendments use the recorded amounts.
 """
 from __future__ import annotations
 
@@ -26,11 +26,11 @@ FIELDS = [
 
 def rows(state: dict) -> list[dict]:
     """Flatten history into ledger rows with a running net."""
-    base = state.get("base_stake", 5.0)
-    out, net, running_pl = [], 0.0, 0.0
+    out, net, running_pl, run_pl = [], 0.0, 0.0, 0.0
     for h in state.get("history", []):
         if h.get("event") == "cash_out":
-            net += h.get("banked", 0.0) - base
+            net += run_pl
+            run_pl = 0.0
             out.append({
                 "placed_at": "", "settled_at": h.get("settled_at", ""),
                 "league": "", "matchup": "", "pick": "— cashed out —",
@@ -46,15 +46,14 @@ def rows(state: dict) -> list[dict]:
         res = h.get("result")
         if not res:
             continue
-        if res == "loss":
-            net -= base
-        elif h.get("cashed_out"):
-            net += h["cashed_out"] - base
-
         stake = float(h.get("stake") or 0.0)
         returned = float(h.get("returned") or 0.0)
         profit_loss = (returned - stake) if res in ("win", "loss") else 0.0
         running_pl += profit_loss
+        run_pl += profit_loss
+        if res == "loss" or h.get("cashed_out"):
+            net += run_pl
+            run_pl = 0.0
 
         out.append({
             "placed_at": h.get("placed_at", ""),

@@ -3,7 +3,7 @@
 Rules:
   - Rung 0 stakes `base_stake` of new money.
   - A win rolls the ENTIRE return forward as the next rung's stake.
-  - A loss resets to rung 0. Total new money at risk per run is `base_stake`.
+  - A loss resets to rung 0. Net uses actual settled stakes, including overrides.
   - A push/void leaves the stake and rung untouched.
   - Reaching `max_rung` cashes out and resets to rung 0.
 """
@@ -204,12 +204,12 @@ class Ladder:
             bet["returned"] = ret
             if self.rung >= self.max_rung:
                 bet["cashed_out"] = ret
-                self.net = round(self.net + ret - self.base_stake, 2)
+                self.net = round(self.net + self.current_run_profit() + ret - bet["stake"], 2)
                 self.runs_completed += 1
                 self._reset()
         elif result == "loss":
             bet["returned"] = 0.0
-            self.net = round(self.net - self.base_stake, 2)
+            self.net = round(self.net + self.current_run_profit() - bet["stake"], 2)
             self.runs_busted += 1
             self._reset()
         else:  # push
@@ -219,6 +219,16 @@ class Ladder:
         self.history.append(bet)
         return bet
 
+    def current_run_profit(self) -> float:
+        """Actual wager P/L since the last reset; works with existing history."""
+        profit = 0.0
+        for bet in reversed(self.history):
+            if bet.get("event") == "cash_out" or bet.get("cashed_out") or bet.get("result") == "loss":
+                break
+            if bet.get("result") == "win":
+                profit += float(bet.get("returned") or 0) - float(bet.get("stake") or 0)
+        return round(profit, 2)
+
     def cash_out(self) -> float:
         """Bank the current stack early and start a fresh ladder."""
         if self.pending:
@@ -226,7 +236,7 @@ class Ladder:
         if self.rung == 0:
             return 0.0
         banked = round(self.stake, 2)
-        self.net = round(self.net + banked - self.base_stake, 2)
+        self.net = round(self.net + self.current_run_profit(), 2)
         self.runs_completed += 1
         self.history.append({"settled_at": _now(), "event": "cash_out",
                              "rung": self.rung, "banked": banked})

@@ -192,10 +192,10 @@ def find_event(league: str, event_id: str, date: str | None = None) -> dict | No
     return None
 
 
-def grade(event: dict, side: str) -> tuple[str, str]:
+def grade(event: dict, side: str, league: str = "") -> tuple[str, str]:
     """Grade a moneyline bet from a finished event.
 
-    Returns (result, detail) where result is win | loss | pending.
+    Returns (result, detail) where result is win | loss | push | pending.
     Free auto-settlement: ESPN marks competitor.winner and status.completed.
     """
     comps = event.get("competitions") or []
@@ -219,7 +219,7 @@ def grade(event: dict, side: str) -> tuple[str, str]:
     home_won = bool(tm["home"].get("winner"))
     away_won = bool(tm["away"].get("winner"))
 
-    # Neither flagged and scores are equal -> genuine draw (soccer).
+    # Two-way moneylines refund ties; three-way soccer treats draw as a side.
     if not home_won and not away_won:
         try:
             drawn = float(hs) == float(as_)
@@ -227,7 +227,11 @@ def grade(event: dict, side: str) -> tuple[str, str]:
             return "pending", f"no winner flag ({score})"
         if not drawn:
             return "pending", f"final but no winner flag ({score})"
-        return ("win" if side == "draw" else "loss"), f"draw — {score}"
+        if side == "draw" or league.lower() in THREE_WAY:
+            return ("win" if side == "draw" else "loss"), f"draw — {score}"
+        if not league:
+            return "pending", f"tied final; league required to determine settlement — {score}"
+        return "push", f"tie — {score}"
 
     winner = "home" if home_won else "away"
     return ("win" if side == winner else "loss"), score
@@ -259,7 +263,7 @@ def grade_bet(league: str, event_id: str, side: str, date: str | None = None,
         tried.append(d)
         ev = find_event(league, event_id, d)
         if ev is not None:
-            return grade(ev, side)
+            return grade(ev, side, league)
 
     # Last resort: sweep a few days either side of the start.
     from datetime import timedelta
@@ -276,6 +280,6 @@ def grade_bet(league: str, event_id: str, side: str, date: str | None = None,
             continue
         ev = find_event(league, event_id, d)
         if ev is not None:
-            return grade(ev, side)
+            return grade(ev, side, league)
 
     return "pending", "event not found in ESPN's scoreboard windows"

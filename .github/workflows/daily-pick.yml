@@ -34,12 +34,17 @@ jobs:
       - uses: actions/setup-python@v6
         with: { python-version: "3.12" }
 
+      - name: Install test runner
+        run: python -m pip install pytest
+
       - name: 1. Settle any finished pending bet
         if: inputs.settle_as != 'skip'
         run: python -m ladder settle "${{ inputs.settle_as || 'auto' }}"
 
       - name: 2. Verify ladder progression
-        run: python -m unittest discover -s tests -p 'test_progression.py' -v
+        run: |
+          python -m pytest -q tests
+          node tests/test_webledger.mjs
 
       - name: 3. Build next-rung option board and report
         run: |

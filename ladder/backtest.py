@@ -208,7 +208,7 @@ def run(leagues: list[str], start: date, end: date, min_decimal: float,
 
         top = rank(cands)[0]
         ev = finished.get(top.event_id)
-        res, detail = espn.grade(ev, top.side) if ev else ("pending", "missing")
+        res, detail = espn.grade(ev, top.side, top.league) if ev else ("pending", "missing")
 
         dr = DayResult(day=ds, picked=True, league=top.league,
                        matchup=top.matchup, pick=top.pick, decimal=top.decimal,

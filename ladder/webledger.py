@@ -125,7 +125,7 @@ LEDGER_JS = r"""
   function reflow(){
     entries.sort(function(a,b){ return (a.added||'').localeCompare(b.added||''); });
     var rung=0, stake=CFG.base_stake, inc=CFG.stake_increment||0.01;
-    var net=0, runningPL=0, cashed=0, bust=0;
+    var net=0, runningPL=0, runPL=0, cashed=0, bust=0;
     entries.forEach(function(e){
       var want = Math.floor(stake/inc+1e-9)*inc;
       if(!e.stake_edited) e.stake = want;
@@ -136,21 +136,22 @@ LEDGER_JS = r"""
       if(e.result==='win'){
         e.returned = e.to_return;
         stake = e.to_return; rung += 1;
-        if(rung >= CFG.max_rung){ net += stake - CFG.base_stake; cashed++;
+        if(rung >= CFG.max_rung){ cashed++;
           e.cashed_out = stake; rung=0; stake=CFG.base_stake; }
         else { e.cashed_out = null; }
       } else if(e.result==='loss'){
-        e.returned = 0; net -= CFG.base_stake; bust++;
+        e.returned = 0; bust++;
         rung=0; stake=CFG.base_stake; e.cashed_out=null;
       } else if(e.result==='push'){
-        e.returned = e.stake; e.cashed_out=null;
+        e.returned = e.stake; stake = e.stake; e.cashed_out=null;
       } else {
         e.returned = null; e.cashed_out=null;
       }
       var pl = e.result==='win' ? e.returned-e.stake
              : e.result==='loss' ? -e.stake : 0;
       e.profit_loss = Math.round(pl*100)/100;
-      runningPL += pl;
+      runningPL += pl; runPL += pl;
+      if(e.result==='loss' || e.cashed_out){ net += runPL; runPL=0; }
       e.running_net = Math.round(net*100)/100;
       e.running_profit_loss = Math.round(runningPL*100)/100;
     });
@@ -159,8 +160,11 @@ LEDGER_JS = r"""
   }
 
   function settleFrom(e,r){
-    var res = (r.winner === e.side) ? 'win'
-            : (r.winner === 'draw' ? (e.side==='draw'?'win':'loss') : 'loss');
+    var league=String(e.league || r.league || '').toLowerCase();
+    var threeWay=['mls','epl','ucl'].indexOf(league)!==-1;
+    if(r.winner==='draw' && e.side!=='draw' && !league) return {pick:e.pick,result:null};
+    var res = r.winner===e.side ? 'win'
+            : r.winner==='draw' && !threeWay ? 'push' : 'loss';
     e.result = res; e.settled_at = r.date || new Date().toISOString().slice(0,10);
     e.score = r.score || '';
     return {pick:e.pick,result:res};

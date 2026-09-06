@@ -103,7 +103,7 @@ def test_grade_win_loss_and_pending():
 def test_grade_draw():
     drew = [e for e in FIX["epl"] if e["id"] == "e9"][0]
     assert espn.grade(drew, "draw")[0] == "win"
-    assert espn.grade(drew, "home")[0] == "loss"
+    assert espn.grade(drew, "home", "epl")[0] == "loss"
 
 
 # ---------- ladder ----------
@@ -792,27 +792,23 @@ def test_results_json_shape():
 
 
 # ---------- seeded state ----------
-def test_shipped_state_includes_liverpool_win_and_is_on_rung_three():
-    """Yankees, Pirates and Liverpool won; the next live stake is $19.15."""
-    import json as j
-    from pathlib import Path
-    p = Path(__file__).parent.parent / "state" / "ladder.json"
-    assert p.exists(), "state/ladder.json should ship seeded"
-    d = j.loads(p.read_text())
-    assert d["rung"] == 3
-    assert d["stake"] == 19.15
-    assert d["max_rung"] == 10
-    assert d["one_bet_per_day"] is False
-    assert d["pending"] is None
-    assert len(d["history"]) == 3
-    h = d["history"][2]
-    assert h["result"] == "win"
-    assert h["pick"] == "Liverpool"
-    assert h["event_id"] == "401879288"
-    assert h["side"] == "away" and h["score"] == "LIV 2 @ IPS 0"
-    assert h["stake"] == 12.66 and h["returned"] == 19.15
-    assert h["american"] == -195.0
-    assert d["net"] == 0.0            # nothing banked until a cash-out or bust
+def _three_win_fixture():
+    """A fixed progression fixture, independent of the user's live wager file."""
+    from ladder.oddsmath import american_to_decimal
+    lad = Ladder(base_stake=5, max_rung=10, one_bet_per_day=False)
+    for name, price in [("Yankees", -167), ("Pirates", -171), ("Liverpool", -195)]:
+        lad.place({"pick": name, "decimal": american_to_decimal(price)})
+        lad.settle("win")
+    return lad
+
+
+def test_three_wins_advance_to_rung_three():
+    lad = _three_win_fixture()
+    assert lad.rung == 3 and lad.stake == 19.15
+    assert lad.pending is None and len(lad.history) == 3
+    assert lad.history[-1]["pick"] == "Liverpool"
+    assert lad.history[-1]["stake"] == 12.66
+    assert lad.net == 0.0
 
 
 def test_rounded_decimal_would_give_the_wrong_stake():
@@ -822,14 +818,11 @@ def test_rounded_decimal_would_give_the_wrong_stake():
     assert round(5 * american_to_decimal(-167), 2) == 7.99
 
 
-def test_next_stake_from_shipped_state_is_1915():
-    import json as j
-    from pathlib import Path
-    p = Path(__file__).parent.parent / "state" / "ladder.json"
-    lad = Ladder(**{k: v for k, v in j.loads(p.read_text()).items()
-                    if k in Ladder.__dataclass_fields__})
-    assert lad.next_stake() == 19.15
-    assert lad.rung == 3
+def test_saved_progression_restores_actual_next_stake(tmp_path):
+    path = tmp_path / "ladder.json"
+    _three_win_fixture().save(path)
+    lad = Ladder.load(path)
+    assert lad.next_stake() == 19.15 and lad.rung == 3
 
 
 def test_repo_history_is_embedded_for_browser_seeding():
