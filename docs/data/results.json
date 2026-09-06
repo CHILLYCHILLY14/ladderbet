@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-06T04:24:28+00:00",
+ "generated": "2026-09-06T05:12:03+00:00",
  "games": {
   "401816815": {
    "completed": true,
@@ -322,6 +322,13 @@
    "league": "ncaaf",
    "date": "2026-09-05",
    "score": "MOST 0 @ TA&M 50"
+  },
+  "401856660": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-06",
+   "score": "CLEM 10 @ LSU 51"
   },
   "401856770": {
    "completed": true,
@@ -680,6 +687,20 @@
    "date": "2026-09-06",
    "score": "LAM 7 @ UL 38"
   },
+  "401870790": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-06",
+   "score": "MERC 14 @ NMSU 51"
+  },
+  "401856773": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-06",
+   "score": "NAU 7 @ ARIZ 35"
+  },
   "401858206": {
    "completed": true,
    "winner": "away",
@@ -945,6 +966,20 @@
    "league": "mls",
    "date": "2026-09-06",
    "score": "LAFC 2 @ RSL 2"
+  },
+  "761783": {
+   "completed": true,
+   "winner": "home",
+   "league": "mls",
+   "date": "2026-09-06",
+   "score": "MIN 4 @ POR 5"
+  },
+  "761784": {
+   "completed": true,
+   "winner": "away",
+   "league": "mls",
+   "date": "2026-09-06",
+   "score": "STL 3 @ VAN 1"
   },
   "761770": {
    "completed": true,
