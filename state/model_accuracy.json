@@ -125,6 +125,27 @@
    "captured_at": "2026-09-06T23:35:56.778813+00:00",
    "result": "Pending",
    "version": "2026-09-06-ev2"
+  },
+  "call:mlb:401816852::ML:home": {
+   "kind": "call",
+   "league": "mlb",
+   "event_id": "401816852",
+   "start": "2026-09-07T21:10Z",
+   "matchup": "Washington Nationals @ San Diego Padres",
+   "pick": "San Diego Padres",
+   "market": "ML",
+   "side": "home",
+   "price": -203.0,
+   "probability": 0.6406,
+   "tier": "SCREENED",
+   "edge": 0,
+   "book": "DraftKings",
+   "three_way": false,
+   "selected": true,
+   "id": "call:mlb:401816852::ML:home",
+   "captured_at": "2026-09-07T02:13:59.375147+00:00",
+   "result": "Pending",
+   "version": "2026-09-06-ev2"
   }
  }
 }
