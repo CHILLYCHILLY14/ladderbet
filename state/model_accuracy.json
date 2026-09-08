@@ -112,8 +112,13 @@
    "selected": true,
    "id": "call:ncaaf:401858212::ML:away",
    "captured_at": "2026-09-06T23:35:56.778813+00:00",
-   "result": "Pending",
-   "version": "2026-09-06-ev2"
+   "result": "Win",
+   "version": "2026-09-06-ev2",
+   "units": 0.645161,
+   "actual": null,
+   "final_home": 24.0,
+   "final_away": 27.0,
+   "graded_at": "2026-09-08T05:13:37.867744+00:00"
   },
   "call:mlb:401816849::ML:home": {
    "kind": "call",
@@ -285,6 +290,27 @@
    "selected": true,
    "id": "call:mlb:401816867::ML:home",
    "captured_at": "2026-09-08T01:13:31.752253+00:00",
+   "result": "Pending",
+   "version": "2026-09-06-ev2"
+  },
+  "call:mls:761795::ML:home": {
+   "kind": "call",
+   "league": "mls",
+   "event_id": "761795",
+   "start": "2026-09-10T02:30Z",
+   "matchup": "Red Bull New York @ LAFC",
+   "pick": "LAFC",
+   "market": "ML",
+   "side": "home",
+   "price": -240.0,
+   "probability": 0.6581,
+   "tier": "SCREENED",
+   "edge": 0,
+   "book": "DraftKings",
+   "three_way": true,
+   "selected": true,
+   "id": "call:mls:761795::ML:home",
+   "captured_at": "2026-09-08T05:13:37.735105+00:00",
    "result": "Pending",
    "version": "2026-09-06-ev2"
   }
