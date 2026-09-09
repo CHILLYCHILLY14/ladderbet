@@ -376,6 +376,27 @@
    "captured_at": "2026-09-08T19:13:19.501861+00:00",
    "result": "Pending",
    "version": "2026-09-06-ev2"
+  },
+  "call:mlb:401816870::ML:home": {
+   "kind": "call",
+   "league": "mlb",
+   "event_id": "401816870",
+   "start": "2026-09-09T23:05Z",
+   "matchup": "Colorado Rockies @ New York Yankees",
+   "pick": "New York Yankees",
+   "market": "ML",
+   "side": "home",
+   "price": -245.0,
+   "probability": 0.6791,
+   "tier": "SCREENED",
+   "edge": 0,
+   "book": "DraftKings",
+   "three_way": false,
+   "selected": true,
+   "id": "call:mlb:401816870::ML:home",
+   "captured_at": "2026-09-09T00:23:26.485352+00:00",
+   "result": "Pending",
+   "version": "2026-09-06-ev2"
   }
  }
 }
