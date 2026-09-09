@@ -1,6 +1,20 @@
 {
- "generated": "2026-09-09T21:12:17+00:00",
+ "generated": "2026-09-09T22:12:59+00:00",
  "games": {
+  "401816872": {
+   "completed": true,
+   "winner": "home",
+   "league": "mlb",
+   "date": "2026-09-09",
+   "score": "MIN 2 @ DET 7"
+  },
+  "401816881": {
+   "completed": true,
+   "winner": "home",
+   "league": "mlb",
+   "date": "2026-09-09",
+   "score": "TOR 0 @ ATH 2"
+  },
   "401816854": {
    "completed": true,
    "winner": "away",
