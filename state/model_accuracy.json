@@ -470,6 +470,27 @@
    "captured_at": "2026-09-09T04:14:22.221500+00:00",
    "result": "Pending",
    "version": "2026-09-06-ev2"
+  },
+  "call:mlb:401816881::ML:away": {
+   "kind": "call",
+   "league": "mlb",
+   "event_id": "401816881",
+   "start": "2026-09-09T19:05Z",
+   "matchup": "Toronto Blue Jays @ Athletics",
+   "pick": "Toronto Blue Jays",
+   "market": "ML",
+   "side": "away",
+   "price": -185.0,
+   "probability": 0.6206,
+   "tier": "SCREENED",
+   "edge": 0,
+   "book": "DraftKings",
+   "three_way": false,
+   "selected": true,
+   "id": "call:mlb:401816881::ML:away",
+   "captured_at": "2026-09-09T08:15:32.054901+00:00",
+   "result": "Pending",
+   "version": "2026-09-06-ev2"
   }
  }
 }
