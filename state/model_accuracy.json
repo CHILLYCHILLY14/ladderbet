@@ -185,8 +185,13 @@
    "selected": true,
    "id": "call:mlb:401816861::ML:home",
    "captured_at": "2026-09-07T19:12:34.133021+00:00",
-   "result": "Pending",
-   "version": "2026-09-06-ev2"
+   "result": "Win",
+   "version": "2026-09-06-ev2",
+   "units": 0.460829,
+   "actual": null,
+   "final_home": 4.0,
+   "final_away": 3.0,
+   "graded_at": "2026-09-09T03:14:06.092151+00:00"
   },
   "call:mlb:401816866::ML:away": {
    "kind": "call",
