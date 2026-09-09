@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-09T03:14:07+00:00",
+ "generated": "2026-09-09T04:14:26+00:00",
  "games": {
   "401816854": {
    "completed": true,
@@ -70,6 +70,27 @@
    "league": "mlb",
    "date": "2026-09-08",
    "score": "PIT 9 @ CHW 3"
+  },
+  "401816866": {
+   "completed": true,
+   "winner": "away",
+   "league": "mlb",
+   "date": "2026-09-09",
+   "score": "TOR 4 @ ATH 2"
+  },
+  "401816867": {
+   "completed": true,
+   "winner": "home",
+   "league": "mlb",
+   "date": "2026-09-09",
+   "score": "WSH 4 @ SD 5"
+  },
+  "401816864": {
+   "completed": true,
+   "winner": "home",
+   "league": "mlb",
+   "date": "2026-09-09",
+   "score": "STL 1 @ SF 2"
   },
   "401816843": {
    "completed": true,

@@ -449,6 +449,27 @@
    "captured_at": "2026-09-09T02:14:07.316511+00:00",
    "result": "Pending",
    "version": "2026-09-06-ev2"
+  },
+  "call:mlb:401816877::ML:home": {
+   "kind": "call",
+   "league": "mlb",
+   "event_id": "401816877",
+   "start": "2026-09-09T23:40Z",
+   "matchup": "Pittsburgh Pirates @ Chicago White Sox",
+   "pick": "Chicago White Sox",
+   "market": "ML",
+   "side": "home",
+   "price": -156.0,
+   "probability": 0.5825,
+   "tier": "SCREENED",
+   "edge": 0,
+   "book": "DraftKings",
+   "three_way": false,
+   "selected": true,
+   "id": "call:mlb:401816877::ML:home",
+   "captured_at": "2026-09-09T04:14:22.221500+00:00",
+   "result": "Pending",
+   "version": "2026-09-06-ev2"
   }
  }
 }
