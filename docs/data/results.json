@@ -1,6 +1,55 @@
 {
- "generated": "2026-09-09T01:13:04+00:00",
+ "generated": "2026-09-09T02:14:08+00:00",
  "games": {
+  "401816854": {
+   "completed": true,
+   "winner": "away",
+   "league": "mlb",
+   "date": "2026-09-08",
+   "score": "CLE 9 @ BAL 5"
+  },
+  "401816856": {
+   "completed": true,
+   "winner": "away",
+   "league": "mlb",
+   "date": "2026-09-08",
+   "score": "HOU 6 @ PHI 5"
+  },
+  "401816857": {
+   "completed": true,
+   "winner": "away",
+   "league": "mlb",
+   "date": "2026-09-08",
+   "score": "MIN 3 @ DET 2"
+  },
+  "401816858": {
+   "completed": true,
+   "winner": "away",
+   "league": "mlb",
+   "date": "2026-09-08",
+   "score": "NYM 7 @ MIA 5"
+  },
+  "401816853": {
+   "completed": true,
+   "winner": "away",
+   "league": "mlb",
+   "date": "2026-09-08",
+   "score": "LAA 6 @ BOS 1"
+  },
+  "401816855": {
+   "completed": true,
+   "winner": "home",
+   "league": "mlb",
+   "date": "2026-09-08",
+   "score": "COL 3 @ NYY 5"
+  },
+  "401816859": {
+   "completed": true,
+   "winner": "away",
+   "league": "mlb",
+   "date": "2026-09-08",
+   "score": "TB 7 @ ATL 1"
+  },
   "401816843": {
    "completed": true,
    "winner": "home",
