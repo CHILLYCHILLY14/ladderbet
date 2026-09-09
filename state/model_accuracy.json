@@ -397,6 +397,27 @@
    "captured_at": "2026-09-09T00:23:26.485352+00:00",
    "result": "Pending",
    "version": "2026-09-06-ev2"
+  },
+  "call:nfl:401872657::ML:home": {
+   "kind": "call",
+   "league": "nfl",
+   "event_id": "401872657",
+   "start": "2026-09-11T00:35Z",
+   "matchup": "San Francisco 49ers @ Los Angeles Rams",
+   "pick": "Los Angeles Rams",
+   "market": "ML",
+   "side": "home",
+   "price": -205.0,
+   "probability": 0.6447,
+   "tier": "SCREENED",
+   "edge": 0,
+   "book": "Draft Kings",
+   "three_way": false,
+   "selected": true,
+   "id": "call:nfl:401872657::ML:home",
+   "captured_at": "2026-09-09T01:13:03.344849+00:00",
+   "result": "Pending",
+   "version": "2026-09-06-ev2"
   }
  }
 }
