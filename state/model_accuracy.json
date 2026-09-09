@@ -491,6 +491,27 @@
    "captured_at": "2026-09-09T08:15:32.054901+00:00",
    "result": "Pending",
    "version": "2026-09-06-ev2"
+  },
+  "call:mlb:401816884::ML:home": {
+   "kind": "call",
+   "league": "mlb",
+   "event_id": "401816884",
+   "start": "2026-09-10T17:05Z",
+   "matchup": "Houston Astros @ Philadelphia Phillies",
+   "pick": "Philadelphia Phillies",
+   "market": "ML",
+   "side": "home",
+   "price": -181.0,
+   "probability": 0.616,
+   "tier": "SCREENED",
+   "edge": 0,
+   "book": "DraftKings",
+   "three_way": false,
+   "selected": true,
+   "id": "call:mlb:401816884::ML:home",
+   "captured_at": "2026-09-09T20:14:26.811350+00:00",
+   "result": "Pending",
+   "version": "2026-09-06-ev2"
   }
  }
 }
