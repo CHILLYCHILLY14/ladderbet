@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-10T22:12:45+00:00",
+ "generated": "2026-09-10T23:11:26+00:00",
  "games": {
   "401816885": {
    "completed": true,
@@ -14,6 +14,13 @@
    "league": "mlb",
    "date": "2026-09-10",
    "score": "HOU 2 @ PHI 1"
+  },
+  "401816887": {
+   "completed": true,
+   "winner": "home",
+   "league": "mlb",
+   "date": "2026-09-10",
+   "score": "TEX 3 @ SEA 4"
   },
   "401816872": {
    "completed": true,
