@@ -678,6 +678,27 @@
    "captured_at": "2026-09-10T16:14:39.040325+00:00",
    "result": "Pending",
    "version": "2026-09-06-ev2"
+  },
+  "call:epl:401878779::ML:away": {
+   "kind": "call",
+   "league": "epl",
+   "event_id": "401878779",
+   "start": "2026-09-12T19:00Z",
+   "matchup": "Arsenal @ Sunderland",
+   "pick": "Arsenal",
+   "market": "ML",
+   "side": "away",
+   "price": -205.0,
+   "probability": 0.6416,
+   "tier": "SCREENED",
+   "edge": 0,
+   "book": "DraftKings",
+   "three_way": true,
+   "selected": true,
+   "id": "call:epl:401878779::ML:away",
+   "captured_at": "2026-09-10T19:11:37.076245+00:00",
+   "result": "Pending",
+   "version": "2026-09-06-ev2"
   }
  }
 }
