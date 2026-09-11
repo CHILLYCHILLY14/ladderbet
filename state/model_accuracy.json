@@ -1019,6 +1019,27 @@
    "captured_at": "2026-09-11T08:15:40.104429+00:00",
    "result": "Pending",
    "version": "2026-09-06-ev2"
+  },
+  "call:mlb:401816899::ML:home": {
+   "kind": "call",
+   "league": "mlb",
+   "event_id": "401816899",
+   "start": "2026-09-11T18:20Z",
+   "matchup": "Pittsburgh Pirates @ Chicago Cubs",
+   "pick": "Chicago Cubs",
+   "market": "ML",
+   "side": "home",
+   "price": -199.0,
+   "probability": 0.6364,
+   "tier": "SCREENED",
+   "edge": 0,
+   "book": "DraftKings",
+   "three_way": false,
+   "selected": true,
+   "id": "call:mlb:401816899::ML:home",
+   "captured_at": "2026-09-11T10:14:33.784292+00:00",
+   "result": "Pending",
+   "version": "2026-09-06-ev2"
   }
  }
 }
