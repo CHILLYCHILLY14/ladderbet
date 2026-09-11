@@ -998,6 +998,27 @@
    "captured_at": "2026-09-11T03:14:18.255602+00:00",
    "result": "Pending",
    "version": "2026-09-06-ev2"
+  },
+  "call:mlb:401816893::ML:away": {
+   "kind": "call",
+   "league": "mlb",
+   "event_id": "401816893",
+   "start": "2026-09-11T23:10Z",
+   "matchup": "Los Angeles Dodgers @ Miami Marlins",
+   "pick": "Los Angeles Dodgers",
+   "market": "ML",
+   "side": "away",
+   "price": -209.0,
+   "probability": 0.6462,
+   "tier": "SCREENED",
+   "edge": 0,
+   "book": "DraftKings",
+   "three_way": false,
+   "selected": true,
+   "id": "call:mlb:401816893::ML:away",
+   "captured_at": "2026-09-11T08:15:40.104429+00:00",
+   "result": "Pending",
+   "version": "2026-09-06-ev2"
   }
  }
 }
