@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-11T03:14:21+00:00",
+ "generated": "2026-09-11T04:15:09+00:00",
  "games": {
   "401816885": {
    "completed": true,
@@ -245,6 +245,13 @@
    "league": "mlb",
    "date": "2026-09-09",
    "score": "CIN 2 @ LAD 3"
+  },
+  "401872657": {
+   "completed": true,
+   "winner": "away",
+   "league": "nfl",
+   "date": "2026-09-11",
+   "score": "SF 27 @ LAR 7"
   },
   "401872656": {
    "completed": true,
