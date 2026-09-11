@@ -935,6 +935,27 @@
    "captured_at": "2026-09-10T23:11:24.077417+00:00",
    "result": "Pending",
    "version": "2026-09-06-ev2"
+  },
+  "call:ncaaf:401862703::ML:away": {
+   "kind": "call",
+   "league": "ncaaf",
+   "event_id": "401862703",
+   "start": "2026-09-12T23:30Z",
+   "matchup": "Navy Midshipmen @ Florida Atlantic Owls",
+   "pick": "Navy Midshipmen",
+   "market": "ML",
+   "side": "away",
+   "price": -218.0,
+   "probability": 0.6575,
+   "tier": "SCREENED",
+   "edge": 0,
+   "book": "DraftKings",
+   "three_way": false,
+   "selected": true,
+   "id": "call:ncaaf:401862703::ML:away",
+   "captured_at": "2026-09-11T00:20:05.122381+00:00",
+   "result": "Pending",
+   "version": "2026-09-06-ev2"
   }
  }
 }

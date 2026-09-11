@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-10T23:11:26+00:00",
+ "generated": "2026-09-11T00:20:06+00:00",
  "games": {
   "401816885": {
    "completed": true,
@@ -232,96 +232,12 @@
    "date": "2026-09-09",
    "score": "CIN 2 @ LAD 3"
   },
-  "401816843": {
-   "completed": true,
-   "winner": "home",
-   "league": "mlb",
-   "date": "2026-09-07",
-   "score": "ATL 0 @ PHI 1"
-  },
-  "401816846": {
-   "completed": true,
-   "winner": "away",
-   "league": "mlb",
-   "date": "2026-09-07",
-   "score": "NYM 9 @ MIA 4"
-  },
-  "401816842": {
-   "completed": true,
-   "winner": "home",
-   "league": "mlb",
-   "date": "2026-09-07",
-   "score": "LAA 2 @ BOS 5"
-  },
-  "401816844": {
-   "completed": true,
-   "winner": "home",
-   "league": "mlb",
-   "date": "2026-09-07",
-   "score": "CLE 4 @ BAL 6"
-  },
-  "401816847": {
-   "completed": true,
-   "winner": "away",
-   "league": "mlb",
-   "date": "2026-09-07",
-   "score": "ARI 5 @ KC 4"
-  },
-  "401816848": {
-   "completed": true,
-   "winner": "home",
-   "league": "mlb",
-   "date": "2026-09-07",
-   "score": "CHC 3 @ MIL 4"
-  },
-  "401816845": {
-   "completed": true,
-   "winner": "home",
-   "league": "mlb",
-   "date": "2026-09-07",
-   "score": "MIN 4 @ DET 5"
-  },
-  "401816852": {
-   "completed": true,
-   "winner": "home",
-   "league": "mlb",
-   "date": "2026-09-07",
-   "score": "WSH 2 @ SD 3"
-  },
-  "401816850": {
-   "completed": true,
-   "winner": "home",
-   "league": "mlb",
-   "date": "2026-09-08",
-   "score": "STL 4 @ SF 5"
-  },
-  "401816849": {
-   "completed": true,
-   "winner": "home",
-   "league": "mlb",
-   "date": "2026-09-08",
-   "score": "CIN 3 @ LAD 6"
-  },
-  "401816851": {
-   "completed": true,
-   "winner": "home",
-   "league": "mlb",
-   "date": "2026-09-08",
-   "score": "TOR 5 @ ATH 6"
-  },
   "401872656": {
    "completed": true,
    "winner": "home",
    "league": "nfl",
    "date": "2026-09-10",
    "score": "NE 10 @ SEA 13"
-  },
-  "401858212": {
-   "completed": true,
-   "winner": "away",
-   "league": "ncaaf",
-   "date": "2026-09-07",
-   "score": "SMU 27 @ FSU 24"
   },
   "761787": {
    "completed": true,
