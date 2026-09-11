@@ -1,77 +1,77 @@
 {
  "schema": 1,
- "generated_at": "2026-09-11T20:14:16.749334+00:00",
+ "generated_at": "2026-09-11T21:12:52.827016+00:00",
  "label": "Ladder screened-option accuracy",
  "method": "Every screened option is saved before the event, whether or not you choose it. Probabilities here are de-vigged market estimates, not an independent sports model. First pre-event snapshot, frozen line and price. All model picks, including PASS/AVOID and unstaked picks. One preferred side per event/market in pick statistics; the complete priced-side audit is separate. One hypothetical unit per pick; no actual wagers are created. Missing results remain pending.",
  "overall": {
-  "logged": 55,
-  "wins": 10,
+  "logged": 57,
+  "wins": 11,
   "losses": 5,
   "pushes": 0,
   "voids": 0,
-  "settled": 15,
-  "pending": 40,
-  "win_rate": 0.6666666666666666,
-  "units": 0.533,
-  "roi": 0.035529533333333335,
-  "brier": 0.22476
+  "settled": 16,
+  "pending": 41,
+  "win_rate": 0.6875,
+  "units": 1.035,
+  "roi": 0.064716,
+  "brier": 0.21898
  },
  "all_calls": {
-  "logged": 55,
-  "wins": 10,
+  "logged": 57,
+  "wins": 11,
   "losses": 5,
   "pushes": 0,
   "voids": 0,
-  "settled": 15,
-  "pending": 40,
-  "win_rate": 0.6666666666666666,
-  "units": 0.533,
-  "roi": 0.035529533333333335,
-  "brier": 0.22476
+  "settled": 16,
+  "pending": 41,
+  "win_rate": 0.6875,
+  "units": 1.035,
+  "roi": 0.064716,
+  "brier": 0.21898
  },
  "by_tier": {
   "SCREENED": {
-   "logged": 55,
-   "wins": 10,
+   "logged": 57,
+   "wins": 11,
    "losses": 5,
    "pushes": 0,
    "voids": 0,
-   "settled": 15,
-   "pending": 40,
-   "win_rate": 0.6666666666666666,
-   "units": 0.533,
-   "roi": 0.035529533333333335,
-   "brier": 0.22476
+   "settled": 16,
+   "pending": 41,
+   "win_rate": 0.6875,
+   "units": 1.035,
+   "roi": 0.064716,
+   "brier": 0.21898
   }
  },
  "by_market": {
   "ML": {
-   "logged": 55,
-   "wins": 10,
+   "logged": 57,
+   "wins": 11,
    "losses": 5,
    "pushes": 0,
    "voids": 0,
-   "settled": 15,
-   "pending": 40,
-   "win_rate": 0.6666666666666666,
-   "units": 0.533,
-   "roi": 0.035529533333333335,
-   "brier": 0.22476
+   "settled": 16,
+   "pending": 41,
+   "win_rate": 0.6875,
+   "units": 1.035,
+   "roi": 0.064716,
+   "brier": 0.21898
   }
  },
  "by_version": {
   "2026-09-06-ev2": {
-   "logged": 55,
-   "wins": 10,
+   "logged": 57,
+   "wins": 11,
    "losses": 5,
    "pushes": 0,
    "voids": 0,
-   "settled": 15,
-   "pending": 40,
-   "win_rate": 0.6666666666666666,
-   "units": 0.533,
-   "roi": 0.035529533333333335,
-   "brier": 0.22476
+   "settled": 16,
+   "pending": 41,
+   "win_rate": 0.6875,
+   "units": 1.035,
+   "roi": 0.064716,
+   "brier": 0.21898
   }
  },
  "calibration": [
@@ -83,9 +83,9 @@
   },
   {
    "bucket": "60\u201370%",
-   "n": 8,
-   "predicted": 0.64082,
-   "actual": 0.625
+   "n": 9,
+   "predicted": 0.64033,
+   "actual": 0.66667
   }
  ],
  "games": {
@@ -123,6 +123,48 @@
  },
  "props": {},
  "records": [
+  {
+   "kind": "call",
+   "league": "nfl",
+   "event_id": "401872929",
+   "start": "2026-09-13T20:25Z",
+   "matchup": "Washington Commanders @ Philadelphia Eagles",
+   "pick": "Philadelphia Eagles",
+   "market": "ML",
+   "side": "home",
+   "price": -250.0,
+   "probability": 0.6854,
+   "tier": "SCREENED",
+   "edge": 0,
+   "book": "DraftKings",
+   "three_way": false,
+   "selected": true,
+   "id": "call:nfl:401872929::ML:home",
+   "captured_at": "2026-09-11T21:12:52.468380+00:00",
+   "result": "Pending",
+   "version": "2026-09-06-ev2"
+  },
+  {
+   "kind": "call",
+   "league": "nfl",
+   "event_id": "401872928",
+   "start": "2026-09-13T20:25Z",
+   "matchup": "Miami Dolphins @ Las Vegas Raiders",
+   "pick": "Las Vegas Raiders",
+   "market": "ML",
+   "side": "home",
+   "price": -170.0,
+   "probability": 0.6038,
+   "tier": "SCREENED",
+   "edge": 0,
+   "book": "DraftKings",
+   "three_way": false,
+   "selected": true,
+   "id": "call:nfl:401872928::ML:home",
+   "captured_at": "2026-09-11T21:12:52.468380+00:00",
+   "result": "Pending",
+   "version": "2026-09-06-ev2"
+  },
   {
    "kind": "call",
    "league": "nfl",
@@ -792,8 +834,13 @@
    "selected": true,
    "id": "call:mlb:401816899::ML:home",
    "captured_at": "2026-09-11T10:14:33.784292+00:00",
-   "result": "Pending",
-   "version": "2026-09-06-ev2"
+   "result": "Win",
+   "version": "2026-09-06-ev2",
+   "units": 0.502513,
+   "actual": null,
+   "final_home": 12.0,
+   "final_away": 2.0,
+   "graded_at": "2026-09-11T21:12:52.825588+00:00"
   },
   {
    "kind": "call",
