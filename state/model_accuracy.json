@@ -956,6 +956,27 @@
    "captured_at": "2026-09-11T00:20:05.122381+00:00",
    "result": "Pending",
    "version": "2026-09-06-ev2"
+  },
+  "call:mls:761806::ML:away": {
+   "kind": "call",
+   "league": "mls",
+   "event_id": "761806",
+   "start": "2026-09-13T00:30Z",
+   "matchup": "LAFC @ Sporting Kansas City",
+   "pick": "LAFC",
+   "market": "ML",
+   "side": "away",
+   "price": -155.0,
+   "probability": 0.5636,
+   "tier": "SCREENED",
+   "edge": 0,
+   "book": "DraftKings",
+   "three_way": true,
+   "selected": true,
+   "id": "call:mls:761806::ML:away",
+   "captured_at": "2026-09-11T01:12:21.580434+00:00",
+   "result": "Pending",
+   "version": "2026-09-06-ev2"
   }
  }
 }
