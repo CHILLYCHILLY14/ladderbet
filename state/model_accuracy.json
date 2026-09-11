@@ -977,6 +977,27 @@
    "captured_at": "2026-09-11T01:12:21.580434+00:00",
    "result": "Pending",
    "version": "2026-09-06-ev2"
+  },
+  "call:ncaaf:401864500::ML:away": {
+   "kind": "call",
+   "league": "ncaaf",
+   "event_id": "401864500",
+   "start": "2026-09-13T02:30Z",
+   "matchup": "Montana State Bobcats @ Nevada Wolf Pack",
+   "pick": "Montana State Bobcats",
+   "market": "ML",
+   "side": "away",
+   "price": -166.0,
+   "probability": 0.5996,
+   "tier": "SCREENED",
+   "edge": 0,
+   "book": "DraftKings",
+   "three_way": false,
+   "selected": true,
+   "id": "call:ncaaf:401864500::ML:away",
+   "captured_at": "2026-09-11T03:14:18.255602+00:00",
+   "result": "Pending",
+   "version": "2026-09-06-ev2"
   }
  }
 }
