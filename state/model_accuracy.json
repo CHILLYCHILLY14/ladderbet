@@ -1400,6 +1400,27 @@
    "captured_at": "2026-09-12T09:13:06.545440+00:00",
    "result": "Pending",
    "version": "2026-09-06-ev2"
+  },
+  "call:ncaaf:401864571::ML:home": {
+   "kind": "call",
+   "league": "ncaaf",
+   "event_id": "401864571",
+   "start": "2026-09-12T16:00Z",
+   "matchup": "App State Mountaineers @ East Carolina Pirates",
+   "pick": "East Carolina Pirates",
+   "market": "ML",
+   "side": "home",
+   "price": -250.0,
+   "probability": 0.6854,
+   "tier": "SCREENED",
+   "edge": 0,
+   "book": "DraftKings",
+   "three_way": false,
+   "selected": true,
+   "id": "call:ncaaf:401864571::ML:home",
+   "captured_at": "2026-09-12T14:12:39.084159+00:00",
+   "result": "Pending",
+   "version": "2026-09-06-ev2"
   }
  }
 }
