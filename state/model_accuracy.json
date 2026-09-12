@@ -597,8 +597,13 @@
    "selected": true,
    "id": "call:ncaaf:401858214::ML:home",
    "captured_at": "2026-09-10T07:15:13.926288+00:00",
-   "result": "Pending",
-   "version": "2026-09-06-ev2"
+   "result": "Win",
+   "version": "2026-09-06-ev2",
+   "units": 0.617284,
+   "actual": null,
+   "final_home": 28.0,
+   "final_away": 21.0,
+   "graded_at": "2026-09-12T04:13:10.202798+00:00"
   },
   "call:epl:401879279::ML:home": {
    "kind": "call",
@@ -1351,6 +1356,27 @@
    "selected": true,
    "id": "call:nfl:401872930::ML:away",
    "captured_at": "2026-09-12T01:11:48.177992+00:00",
+   "result": "Pending",
+   "version": "2026-09-06-ev2"
+  },
+  "call:mlb:401816905::ML:home": {
+   "kind": "call",
+   "league": "mlb",
+   "event_id": "401816905",
+   "start": "2026-09-12T17:10Z",
+   "matchup": "Colorado Rockies @ Detroit Tigers",
+   "pick": "Detroit Tigers",
+   "market": "ML",
+   "side": "home",
+   "price": -172.0,
+   "probability": 0.6048,
+   "tier": "SCREENED",
+   "edge": 0,
+   "book": "DraftKings",
+   "three_way": false,
+   "selected": true,
+   "id": "call:mlb:401816905::ML:home",
+   "captured_at": "2026-09-12T04:13:09.803034+00:00",
    "result": "Pending",
    "version": "2026-09-06-ev2"
   }
