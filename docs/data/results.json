@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-12T19:11:16+00:00",
+ "generated": "2026-09-12T20:13:10+00:00",
  "games": {
   "401816899": {
    "completed": true,
@@ -260,12 +260,12 @@
    "date": "2026-09-10",
    "score": "NE 10 @ SEA 13"
   },
-  "401858442": {
+  "401856673": {
    "completed": true,
-   "winner": "away",
+   "winner": "home",
    "league": "ncaaf",
    "date": "2026-09-12",
-   "score": "PSU 27 @ TEM 9"
+   "score": "WKU 20 @ UGA 70"
   },
   "401858439": {
    "completed": true,
@@ -273,6 +273,97 @@
    "league": "ncaaf",
    "date": "2026-09-12",
    "score": "HOW 0 @ IU 55"
+  },
+  "401856683": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "ASU 20 @ TA&M 48"
+  },
+  "401856679": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "OU 10 @ MICH 17"
+  },
+  "401858442": {
+   "completed": true,
+   "winner": "away",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "PSU 27 @ TEM 9"
+  },
+  "401856781": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "WSU 7 @ KSU 34"
+  },
+  "401858221": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "ODU 21 @ VT 44"
+  },
+  "401858224": {
+   "completed": true,
+   "winner": "away",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "WAKE 38 @ PUR 36"
+  },
+  "401862702": {
+   "completed": true,
+   "winner": "away",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "USF 28 @ ARMY 24"
+  },
+  "401864571": {
+   "completed": true,
+   "winner": "away",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "APP 27 @ ECU 24"
+  },
+  "401866416": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "WOF 15 @ KENT 36"
+  },
+  "401867929": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "WAG 3 @ JMU 87"
+  },
+  "401868187": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "GWEB 23 @ LIB 24"
+  },
+  "401866415": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "COLG 10 @ CMU 13"
+  },
+  "401866417": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "HC 7 @ M-OH 45"
   },
   "401856678": {
    "completed": true,
