@@ -1426,6 +1426,27 @@
    "captured_at": "2026-09-12T14:12:39.084159+00:00",
    "result": "Pending",
    "version": "2026-09-06-ev2"
+  },
+  "call:mls:761808::ML:home": {
+   "kind": "call",
+   "league": "mls",
+   "event_id": "761808",
+   "start": "2026-09-13T01:30Z",
+   "matchup": "CF Montr\u00e9al @ Colorado Rapids",
+   "pick": "Colorado Rapids",
+   "market": "ML",
+   "side": "home",
+   "price": -165.0,
+   "probability": 0.5769,
+   "tier": "SCREENED",
+   "edge": 0,
+   "book": "DraftKings",
+   "three_way": true,
+   "selected": true,
+   "id": "call:mls:761808::ML:home",
+   "captured_at": "2026-09-12T17:12:14.550553+00:00",
+   "result": "Pending",
+   "version": "2026-09-06-ev2"
   }
  }
 }
