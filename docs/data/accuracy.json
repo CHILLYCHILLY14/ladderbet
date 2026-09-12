@@ -1,91 +1,91 @@
 {
  "schema": 1,
- "generated_at": "2026-09-12T22:12:44.545793+00:00",
+ "generated_at": "2026-09-12T23:12:13.627671+00:00",
  "label": "Ladder screened-option accuracy",
  "method": "Every screened option is saved before the event, whether or not you choose it. Probabilities here are de-vigged market estimates, not an independent sports model. First pre-event snapshot, frozen line and price. All model picks, including PASS/AVOID and unstaked picks. One preferred side per event/market in pick statistics; the complete priced-side audit is separate. One hypothetical unit per pick; no actual wagers are created. Missing results remain pending.",
  "overall": {
   "logged": 68,
-  "wins": 21,
-  "losses": 11,
+  "wins": 23,
+  "losses": 13,
   "pushes": 0,
   "voids": 0,
-  "settled": 32,
-  "pending": 36,
-  "win_rate": 0.65625,
-  "units": 0.703,
-  "roi": 0.02198353125,
-  "brier": 0.23456
+  "settled": 36,
+  "pending": 32,
+  "win_rate": 0.6388888888888888,
+  "units": -0.169,
+  "roi": -0.004695527777777782,
+  "brier": 0.24004
  },
  "all_calls": {
   "logged": 68,
-  "wins": 21,
-  "losses": 11,
+  "wins": 23,
+  "losses": 13,
   "pushes": 0,
   "voids": 0,
-  "settled": 32,
-  "pending": 36,
-  "win_rate": 0.65625,
-  "units": 0.703,
-  "roi": 0.02198353125,
-  "brier": 0.23456
+  "settled": 36,
+  "pending": 32,
+  "win_rate": 0.6388888888888888,
+  "units": -0.169,
+  "roi": -0.004695527777777782,
+  "brier": 0.24004
  },
  "by_tier": {
   "SCREENED": {
    "logged": 68,
-   "wins": 21,
-   "losses": 11,
+   "wins": 23,
+   "losses": 13,
    "pushes": 0,
    "voids": 0,
-   "settled": 32,
-   "pending": 36,
-   "win_rate": 0.65625,
-   "units": 0.703,
-   "roi": 0.02198353125,
-   "brier": 0.23456
+   "settled": 36,
+   "pending": 32,
+   "win_rate": 0.6388888888888888,
+   "units": -0.169,
+   "roi": -0.004695527777777782,
+   "brier": 0.24004
   }
  },
  "by_market": {
   "ML": {
    "logged": 68,
-   "wins": 21,
-   "losses": 11,
+   "wins": 23,
+   "losses": 13,
    "pushes": 0,
    "voids": 0,
-   "settled": 32,
-   "pending": 36,
-   "win_rate": 0.65625,
-   "units": 0.703,
-   "roi": 0.02198353125,
-   "brier": 0.23456
+   "settled": 36,
+   "pending": 32,
+   "win_rate": 0.6388888888888888,
+   "units": -0.169,
+   "roi": -0.004695527777777782,
+   "brier": 0.24004
   }
  },
  "by_version": {
   "2026-09-06-ev2": {
    "logged": 68,
-   "wins": 21,
-   "losses": 11,
+   "wins": 23,
+   "losses": 13,
    "pushes": 0,
    "voids": 0,
-   "settled": 32,
-   "pending": 36,
-   "win_rate": 0.65625,
-   "units": 0.703,
-   "roi": 0.02198353125,
-   "brier": 0.23456
+   "settled": 36,
+   "pending": 32,
+   "win_rate": 0.6388888888888888,
+   "units": -0.169,
+   "roi": -0.004695527777777782,
+   "brier": 0.24004
   }
  },
  "calibration": [
   {
    "bucket": "50\u201360%",
-   "n": 11,
-   "predicted": 0.58616,
-   "actual": 0.72727
+   "n": 12,
+   "predicted": 0.58659,
+   "actual": 0.75
   },
   {
    "bucket": "60\u201370%",
-   "n": 21,
-   "predicted": 0.63725,
-   "actual": 0.61905
+   "n": 24,
+   "predicted": 0.6378,
+   "actual": 0.58333
   }
  ],
  "games": {
@@ -540,8 +540,13 @@
    "selected": true,
    "id": "call:mlb:401816908::ML:away",
    "captured_at": "2026-09-12T01:11:48.177992+00:00",
-   "result": "Pending",
-   "version": "2026-09-06-ev2"
+   "result": "Loss",
+   "version": "2026-09-06-ev2",
+   "units": -1,
+   "actual": null,
+   "final_home": 4.0,
+   "final_away": 3.0,
+   "graded_at": "2026-09-12T23:12:13.625827+00:00"
   },
   {
    "kind": "call",
@@ -561,8 +566,13 @@
    "selected": true,
    "id": "call:mlb:401816907::ML:home",
    "captured_at": "2026-09-11T20:14:16.010682+00:00",
-   "result": "Pending",
-   "version": "2026-09-06-ev2"
+   "result": "Win",
+   "version": "2026-09-06-ev2",
+   "units": 0.510204,
+   "actual": null,
+   "final_home": 5.0,
+   "final_away": 1.0,
+   "graded_at": "2026-09-12T23:12:13.625827+00:00"
   },
   {
    "kind": "call",
@@ -582,8 +592,13 @@
    "selected": true,
    "id": "call:mlb:401816915::ML:away",
    "captured_at": "2026-09-11T20:14:16.010682+00:00",
-   "result": "Pending",
-   "version": "2026-09-06-ev2"
+   "result": "Win",
+   "version": "2026-09-06-ev2",
+   "units": 0.617284,
+   "actual": null,
+   "final_home": 6.0,
+   "final_away": 7.0,
+   "graded_at": "2026-09-12T23:12:13.625827+00:00"
   },
   {
    "kind": "call",
@@ -624,8 +639,13 @@
    "selected": true,
    "id": "call:ncaaf:401858217::ML:home",
    "captured_at": "2026-09-10T20:13:10.982530+00:00",
-   "result": "Pending",
-   "version": "2026-09-06-ev2"
+   "result": "Loss",
+   "version": "2026-09-06-ev2",
+   "units": -1,
+   "actual": null,
+   "final_home": 27.0,
+   "final_away": 31.0,
+   "graded_at": "2026-09-12T23:12:13.625827+00:00"
   },
   {
    "kind": "call",
