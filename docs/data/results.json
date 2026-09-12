@@ -1,6 +1,27 @@
 {
- "generated": "2026-09-12T20:13:10+00:00",
+ "generated": "2026-09-12T21:13:21+00:00",
  "games": {
+  "401816905": {
+   "completed": true,
+   "winner": "home",
+   "league": "mlb",
+   "date": "2026-09-12",
+   "score": "COL 7 @ DET 11"
+  },
+  "401816909": {
+   "completed": true,
+   "winner": "away",
+   "league": "mlb",
+   "date": "2026-09-12",
+   "score": "NYM 12 @ NYY 2"
+  },
+  "401816914": {
+   "completed": true,
+   "winner": "home",
+   "league": "mlb",
+   "date": "2026-09-12",
+   "score": "PIT 3 @ CHC 4"
+  },
   "401816899": {
    "completed": true,
    "winner": "home",
@@ -260,6 +281,13 @@
    "date": "2026-09-10",
    "score": "NE 10 @ SEA 13"
   },
+  "401856782": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "ORE 31 @ OKST 39"
+  },
   "401856673": {
    "completed": true,
    "winner": "home",
@@ -301,6 +329,13 @@
    "league": "ncaaf",
    "date": "2026-09-12",
    "score": "WSU 7 @ KSU 34"
+  },
+  "401858218": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "ETSU 3 @ UNC 35"
   },
   "401858221": {
    "completed": true,
@@ -350,6 +385,13 @@
    "league": "ncaaf",
    "date": "2026-09-12",
    "score": "GWEB 23 @ LIB 24"
+  },
+  "401856791": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "UTM 7 @ WVU 52"
   },
   "401866415": {
    "completed": true,
@@ -448,6 +490,13 @@
    "league": "epl",
    "date": "2026-09-12",
    "score": "EVE 0 @ TOT 0"
+  },
+  "401878779": {
+   "completed": true,
+   "winner": "away",
+   "league": "epl",
+   "date": "2026-09-12",
+   "score": "ARS 2 @ SUN 0"
   },
   "761787": {
    "completed": true,
