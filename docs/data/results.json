@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-13T04:14:35+00:00",
+ "generated": "2026-09-13T05:13:01+00:00",
  "games": {
   "401816905": {
    "completed": true,
@@ -98,6 +98,13 @@
    "league": "mlb",
    "date": "2026-09-13",
    "score": "TEX 6 @ ARI 2"
+  },
+  "401816916": {
+   "completed": true,
+   "winner": "away",
+   "league": "mlb",
+   "date": "2026-09-13",
+   "score": "SEA 19 @ ATH 1"
   },
   "401816899": {
    "completed": true,
@@ -245,6 +252,13 @@
    "league": "nfl",
    "date": "2026-09-11",
    "score": "SF 27 @ LAR 7"
+  },
+  "401858219": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-13",
+   "score": "GASO 7 @ CLEM 22"
   },
   "401856682": {
    "completed": true,
@@ -736,12 +750,26 @@
    "date": "2026-09-13",
    "score": "PV 3 @ BAY 44"
   },
+  "401856671": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-13",
+   "score": "USM 8 @ AUB 43"
+  },
   "401864504": {
    "completed": true,
    "winner": "home",
    "league": "ncaaf",
    "date": "2026-09-13",
    "score": "CP 20 @ SJSU 30"
+  },
+  "401864505": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-13",
+   "score": "TXSO 10 @ UTEP 51"
   },
   "401856678": {
    "completed": true,
@@ -903,6 +931,20 @@
    "league": "mls",
    "date": "2026-09-13",
    "score": "NYC 2 @ RSL 0"
+  },
+  "761811": {
+   "completed": true,
+   "winner": "draw",
+   "league": "mls",
+   "date": "2026-09-13",
+   "score": "SEA 1 @ LA 1"
+  },
+  "761810": {
+   "completed": true,
+   "winner": "home",
+   "league": "mls",
+   "date": "2026-09-13",
+   "score": "HOU 0 @ SJ 1"
   }
  }
 }
