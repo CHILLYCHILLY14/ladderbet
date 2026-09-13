@@ -1034,8 +1034,13 @@
    "selected": true,
    "id": "call:ncaaf:401862703::ML:away",
    "captured_at": "2026-09-11T00:20:05.122381+00:00",
-   "result": "Pending",
-   "version": "2026-09-06-ev2"
+   "result": "Loss",
+   "version": "2026-09-06-ev2",
+   "units": -1,
+   "actual": null,
+   "final_home": 38.0,
+   "final_away": 30.0,
+   "graded_at": "2026-09-13T04:14:27.450992+00:00"
   },
   "call:mls:761806::ML:away": {
    "kind": "call",
@@ -1625,6 +1630,27 @@
    "selected": true,
    "id": "call:mlb:401816919::ML:home",
    "captured_at": "2026-09-12T21:13:19.783858+00:00",
+   "result": "Pending",
+   "version": "2026-09-06-ev2"
+  },
+  "call:mlb:401816927::ML:home": {
+   "kind": "call",
+   "league": "mlb",
+   "event_id": "401816927",
+   "start": "2026-09-13T18:10Z",
+   "matchup": "Cincinnati Reds @ Milwaukee Brewers",
+   "pick": "Milwaukee Brewers",
+   "market": "ML",
+   "side": "home",
+   "price": -207.0,
+   "probability": 0.6455,
+   "tier": "SCREENED",
+   "edge": 0,
+   "book": "DraftKings",
+   "three_way": false,
+   "selected": true,
+   "id": "call:mlb:401816927::ML:home",
+   "captured_at": "2026-09-13T04:14:23.233984+00:00",
    "result": "Pending",
    "version": "2026-09-06-ev2"
   }
