@@ -1175,8 +1175,13 @@
    "selected": true,
    "id": "call:nfl:401872658::ML:home",
    "captured_at": "2026-09-11T17:12:29.261180+00:00",
-   "result": "Pending",
-   "version": "2026-09-06-ev2"
+   "result": "Win",
+   "version": "2026-09-06-ev2",
+   "units": 0.444444,
+   "actual": null,
+   "final_home": 20.0,
+   "final_away": 13.0,
+   "graded_at": "2026-09-13T20:13:36.311517+00:00"
   },
   "call:nfl:401872925::ML:home": {
    "kind": "call",
@@ -1196,8 +1201,13 @@
    "selected": true,
    "id": "call:nfl:401872925::ML:home",
    "captured_at": "2026-09-11T17:12:29.261180+00:00",
-   "result": "Pending",
-   "version": "2026-09-06-ev2"
+   "result": "Win",
+   "version": "2026-09-06-ev2",
+   "units": 0.505051,
+   "actual": null,
+   "final_home": 33.0,
+   "final_away": 27.0,
+   "graded_at": "2026-09-13T20:13:36.311517+00:00"
   },
   "call:nfl:401872659::ML:away": {
    "kind": "call",
@@ -1217,8 +1227,13 @@
    "selected": true,
    "id": "call:nfl:401872659::ML:away",
    "captured_at": "2026-09-11T17:12:29.261180+00:00",
-   "result": "Pending",
-   "version": "2026-09-06-ev2"
+   "result": "Win",
+   "version": "2026-09-06-ev2",
+   "units": 0.571429,
+   "actual": null,
+   "final_home": 23.0,
+   "final_away": 41.0,
+   "graded_at": "2026-09-13T20:13:36.311517+00:00"
   },
   "call:nfl:401872661::ML:away": {
    "kind": "call",
@@ -1677,6 +1692,48 @@
    "selected": true,
    "id": "call:mlb:401816929::ML:home",
    "captured_at": "2026-09-13T14:13:06.268572+00:00",
+   "result": "Pending",
+   "version": "2026-09-06-ev2"
+  },
+  "call:mlb:401816936::ML:away": {
+   "kind": "call",
+   "league": "mlb",
+   "event_id": "401816936",
+   "start": "2026-09-14T22:40Z",
+   "matchup": "Los Angeles Dodgers @ Cincinnati Reds",
+   "pick": "Los Angeles Dodgers",
+   "market": "ML",
+   "side": "away",
+   "price": -217.0,
+   "probability": 0.6547,
+   "tier": "SCREENED",
+   "edge": 0,
+   "book": "DraftKings",
+   "three_way": false,
+   "selected": true,
+   "id": "call:mlb:401816936::ML:away",
+   "captured_at": "2026-09-13T20:13:35.912068+00:00",
+   "result": "Pending",
+   "version": "2026-09-06-ev2"
+  },
+  "call:mlb:401816940::ML:away": {
+   "kind": "call",
+   "league": "mlb",
+   "event_id": "401816940",
+   "start": "2026-09-15T00:40Z",
+   "matchup": "San Diego Padres @ Colorado Rockies",
+   "pick": "San Diego Padres",
+   "market": "ML",
+   "side": "away",
+   "price": -185.0,
+   "probability": 0.6206,
+   "tier": "SCREENED",
+   "edge": 0,
+   "book": "DraftKings",
+   "three_way": false,
+   "selected": true,
+   "id": "call:mlb:401816940::ML:away",
+   "captured_at": "2026-09-13T20:13:35.912068+00:00",
    "result": "Pending",
    "version": "2026-09-06-ev2"
   }
