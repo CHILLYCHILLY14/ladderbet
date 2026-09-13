@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-12T23:12:14+00:00",
+ "generated": "2026-09-13T00:20:17+00:00",
  "games": {
   "401816905": {
    "completed": true,
@@ -204,124 +204,12 @@
    "date": "2026-09-10",
    "score": "PIT 2 @ CHW 0"
   },
-  "401816872": {
-   "completed": true,
-   "winner": "home",
-   "league": "mlb",
-   "date": "2026-09-09",
-   "score": "MIN 2 @ DET 7"
-  },
-  "401816881": {
-   "completed": true,
-   "winner": "home",
-   "league": "mlb",
-   "date": "2026-09-09",
-   "score": "TOR 0 @ ATH 2"
-  },
-  "401816879": {
-   "completed": true,
-   "winner": "home",
-   "league": "mlb",
-   "date": "2026-09-09",
-   "score": "STL 6 @ SF 7"
-  },
-  "401816880": {
-   "completed": true,
-   "winner": "home",
-   "league": "mlb",
-   "date": "2026-09-09",
-   "score": "TEX 2 @ SEA 3"
-  },
-  "401816882": {
-   "completed": true,
-   "winner": "home",
-   "league": "mlb",
-   "date": "2026-09-09",
-   "score": "WSH 2 @ SD 9"
-  },
-  "401816869": {
-   "completed": true,
-   "winner": "home",
-   "league": "mlb",
-   "date": "2026-09-09",
-   "score": "CLE 5 @ BAL 9"
-  },
-  "401816871": {
-   "completed": true,
-   "winner": "home",
-   "league": "mlb",
-   "date": "2026-09-09",
-   "score": "HOU 7 @ PHI 11"
-  },
-  "401816873": {
-   "completed": true,
-   "winner": "away",
-   "league": "mlb",
-   "date": "2026-09-09",
-   "score": "NYM 15 @ MIA 14"
-  },
-  "401816868": {
-   "completed": true,
-   "winner": "away",
-   "league": "mlb",
-   "date": "2026-09-09",
-   "score": "LAA 6 @ BOS 4"
-  },
-  "401816870": {
-   "completed": true,
-   "winner": "home",
-   "league": "mlb",
-   "date": "2026-09-09",
-   "score": "COL 1 @ NYY 6"
-  },
-  "401816874": {
-   "completed": true,
-   "winner": "away",
-   "league": "mlb",
-   "date": "2026-09-09",
-   "score": "TB 7 @ ATL 2"
-  },
-  "401816875": {
-   "completed": true,
-   "winner": "home",
-   "league": "mlb",
-   "date": "2026-09-09",
-   "score": "ARI 2 @ KC 5"
-  },
-  "401816876": {
-   "completed": true,
-   "winner": "home",
-   "league": "mlb",
-   "date": "2026-09-09",
-   "score": "CHC 6 @ MIL 8"
-  },
-  "401816877": {
-   "completed": true,
-   "winner": "away",
-   "league": "mlb",
-   "date": "2026-09-09",
-   "score": "PIT 4 @ CHW 2"
-  },
-  "401816878": {
-   "completed": true,
-   "winner": "home",
-   "league": "mlb",
-   "date": "2026-09-10",
-   "score": "CIN 1 @ LAD 14"
-  },
   "401872657": {
    "completed": true,
    "winner": "away",
    "league": "nfl",
    "date": "2026-09-11",
    "score": "SF 27 @ LAR 7"
-  },
-  "401872656": {
-   "completed": true,
-   "winner": "home",
-   "league": "nfl",
-   "date": "2026-09-10",
-   "score": "NE 10 @ SEA 13"
   },
   "401856673": {
    "completed": true,
@@ -365,6 +253,13 @@
    "date": "2026-09-12",
    "score": "OU 10 @ MICH 17"
   },
+  "401856674": {
+   "completed": true,
+   "winner": "away",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "ALA 45 @ UK 17"
+  },
   "401856810": {
    "completed": true,
    "winner": "home",
@@ -378,6 +273,13 @@
    "league": "ncaaf",
    "date": "2026-09-12",
    "score": "PSU 27 @ TEM 9"
+  },
+  "401858223": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "UCD 10 @ SMU 56"
   },
   "401858446": {
    "completed": true,
@@ -484,6 +386,27 @@
    "date": "2026-09-12",
    "score": "MSST 38 @ MINN 13"
   },
+  "401856785": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "WEB 21 @ COLO 52"
+  },
+  "401856790": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "UCF 7 @ PITT 12"
+  },
+  "401858216": {
+   "completed": true,
+   "winner": "away",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "CAL 21 @ SYR 18"
+  },
   "401858217": {
    "completed": true,
    "winner": "away",
@@ -504,6 +427,13 @@
    "league": "ncaaf",
    "date": "2026-09-12",
    "score": "MD 38 @ CONN 14"
+  },
+  "401860884": {
+   "completed": true,
+   "winner": "away",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "UTSA 31 @ TXST 26"
   },
   "401862708": {
    "completed": true,
@@ -532,6 +462,41 @@
    "league": "ncaaf",
    "date": "2026-09-12",
    "score": "SHU 10 @ MASS 37"
+  },
+  "401862705": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "UNLV 6 @ UNT 44"
+  },
+  "401864506": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "UNCO 13 @ WYO 21"
+  },
+  "401865252": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "MERC 7 @ UNM 70"
+  },
+  "401868326": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "ALST 17 @ TROY 34"
+  },
+  "401856684": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "DEL 26 @ VAN 35"
   },
   "401856678": {
    "completed": true,
@@ -623,104 +588,6 @@
    "league": "epl",
    "date": "2026-09-12",
    "score": "ARS 2 @ SUN 0"
-  },
-  "761787": {
-   "completed": true,
-   "winner": "away",
-   "league": "mls",
-   "date": "2026-09-09",
-   "score": "ORL 3 @ ATL 2"
-  },
-  "761785": {
-   "completed": true,
-   "winner": "away",
-   "league": "mls",
-   "date": "2026-09-09",
-   "score": "CLT 2 @ MTL 1"
-  },
-  "761789": {
-   "completed": true,
-   "winner": "home",
-   "league": "mls",
-   "date": "2026-09-09",
-   "score": "CLB 1 @ DC 2"
-  },
-  "761790": {
-   "completed": true,
-   "winner": "home",
-   "league": "mls",
-   "date": "2026-09-09",
-   "score": "NSH 1 @ TOR 2"
-  },
-  "761786": {
-   "completed": true,
-   "winner": "home",
-   "league": "mls",
-   "date": "2026-09-09",
-   "score": "CIN 0 @ PHI 5"
-  },
-  "761788": {
-   "completed": true,
-   "winner": "away",
-   "league": "mls",
-   "date": "2026-09-10",
-   "score": "NE 2 @ NYC 1"
-  },
-  "761794": {
-   "completed": true,
-   "winner": "draw",
-   "league": "mls",
-   "date": "2026-09-10",
-   "score": "COL 1 @ ATX 1"
-  },
-  "761792": {
-   "completed": true,
-   "winner": "draw",
-   "league": "mls",
-   "date": "2026-09-10",
-   "score": "MIA 1 @ CHI 1"
-  },
-  "761791": {
-   "completed": true,
-   "winner": "home",
-   "league": "mls",
-   "date": "2026-09-10",
-   "score": "RSL 1 @ HOU 2"
-  },
-  "761793": {
-   "completed": true,
-   "winner": "away",
-   "league": "mls",
-   "date": "2026-09-10",
-   "score": "DAL 2 @ MIN 1"
-  },
-  "761795": {
-   "completed": true,
-   "winner": "home",
-   "league": "mls",
-   "date": "2026-09-10",
-   "score": "RBNY 0 @ LAFC 2"
-  },
-  "761796": {
-   "completed": true,
-   "winner": "draw",
-   "league": "mls",
-   "date": "2026-09-10",
-   "score": "STL 2 @ POR 2"
-  },
-  "761797": {
-   "completed": true,
-   "winner": "away",
-   "league": "mls",
-   "date": "2026-09-10",
-   "score": "SJ 3 @ SD 2"
-  },
-  "761799": {
-   "completed": true,
-   "winner": "home",
-   "league": "mls",
-   "date": "2026-09-10",
-   "score": "LA 0 @ VAN 3"
   }
  }
 }
