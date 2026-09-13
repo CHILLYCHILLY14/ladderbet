@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-13T00:20:17+00:00",
+ "generated": "2026-09-13T01:11:51+00:00",
  "games": {
   "401816905": {
    "completed": true,
@@ -63,6 +63,13 @@
    "league": "mlb",
    "date": "2026-09-12",
    "score": "CLE 3 @ MIN 4"
+  },
+  "401816906": {
+   "completed": true,
+   "winner": "home",
+   "league": "mlb",
+   "date": "2026-09-12",
+   "score": "HOU 2 @ TB 3"
   },
   "401816899": {
    "completed": true,
@@ -497,6 +504,13 @@
    "league": "ncaaf",
    "date": "2026-09-12",
    "score": "DEL 26 @ VAN 35"
+  },
+  "401856672": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-12",
+   "score": "CAM 3 @ FLA 52"
   },
   "401856678": {
    "completed": true,
