@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-13T07:12:56+00:00",
+ "generated": "2026-09-13T08:14:11+00:00",
  "games": {
   "401816905": {
    "completed": true,
@@ -805,6 +805,13 @@
    "league": "ncaaf",
    "date": "2026-09-13",
    "score": "MTST 20 @ NEV 7"
+  },
+  "401864578": {
+   "completed": true,
+   "winner": "home",
+   "league": "ncaaf",
+   "date": "2026-09-13",
+   "score": "NMSU 19 @ HAW 29"
   },
   "401856678": {
    "completed": true,
