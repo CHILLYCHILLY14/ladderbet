@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-13T14:13:07+00:00",
+ "generated": "2026-09-13T15:13:18+00:00",
  "games": {
   "401816905": {
    "completed": true,
@@ -854,6 +854,13 @@
    "league": "ncaaf",
    "date": "2026-09-11",
    "score": "FAMU 7 @ MIA 77"
+  },
+  "401879282": {
+   "completed": true,
+   "winner": "away",
+   "league": "epl",
+   "date": "2026-09-13",
+   "score": "BHA 5 @ COV 0"
   },
   "401879285": {
    "completed": true,
