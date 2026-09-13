@@ -472,6 +472,15 @@ LEDGER_JS = r"""
           ', skipped '+(inc.length-added)+' already here.');
   };
 
+  // The shared ledger's adapter lives outside this closure. Hand it the chain,
+  // a way to replace it, and a repaint - reflow works the numbers out again
+  // from there, so nothing derived ever has to travel.
+  window.LadderLedger = {
+    STORAGE_KEY: KEY,
+    get: function(){ return entries; },
+    set: function(rows){ entries = rows; save(entries); draw(); syncButtons(); }
+  };
+
   // The committed record is authoritative and is merged on every load. Local
   // entries remain available, while the same real bet is never duplicated.
   mergeRepoHistory();

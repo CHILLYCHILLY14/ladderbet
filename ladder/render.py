@@ -604,6 +604,7 @@ def render(state: dict, candidates: list[dict], warnings: list[str],
         p.append(INTERACTIVE)
     p.append(LEDGER_JS)
     p.append('<section id="accuracy"><div data-model-accuracy></div></section><script src="model-accuracy.js"></script>')
+    p.append('<!-- Shared ledger: keeps this board in step with the same bets on every other device. Endpoint and token live in this browser only. --><script src="betsync.js"></script><script src="sync-adapter.js"></script><script src="betsync-ui.js"></script>')
     p.append("</body></html>")
     return "".join(p)
 

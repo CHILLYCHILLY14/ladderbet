@@ -45,6 +45,7 @@ jobs:
         run: |
           python -m pytest -q tests
           node tests/test_webledger.mjs
+          node tests/test_sync.mjs
 
       - name: 3. Build next-rung option board and report
         run: |
