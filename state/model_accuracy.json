@@ -1253,8 +1253,13 @@
    "selected": true,
    "id": "call:nfl:401872661::ML:away",
    "captured_at": "2026-09-11T17:12:29.261180+00:00",
-   "result": "Pending",
-   "version": "2026-09-06-ev2"
+   "result": "Win",
+   "version": "2026-09-06-ev2",
+   "units": 0.588235,
+   "actual": null,
+   "final_home": 37.0,
+   "final_away": 59.0,
+   "graded_at": "2026-09-13T21:12:46.050879+00:00"
   },
   "call:mlb:401816907::ML:home": {
    "kind": "call",
@@ -1561,8 +1566,13 @@
    "selected": true,
    "id": "call:mlb:401816924::ML:home",
    "captured_at": "2026-09-12T21:13:19.783858+00:00",
-   "result": "Pending",
-   "version": "2026-09-06-ev2"
+   "result": "Win",
+   "version": "2026-09-06-ev2",
+   "units": 0.52356,
+   "actual": null,
+   "final_home": 2.0,
+   "final_away": 0.0,
+   "graded_at": "2026-09-13T21:12:46.050879+00:00"
   },
   "call:mlb:401816922::ML:home": {
    "kind": "call",
@@ -1629,8 +1639,13 @@
    "selected": true,
    "id": "call:mlb:401816923::ML:away",
    "captured_at": "2026-09-12T21:13:19.783858+00:00",
-   "result": "Pending",
-   "version": "2026-09-06-ev2"
+   "result": "Loss",
+   "version": "2026-09-06-ev2",
+   "units": -1,
+   "actual": null,
+   "final_home": 6.0,
+   "final_away": 4.0,
+   "graded_at": "2026-09-13T21:12:46.050879+00:00"
   },
   "call:mlb:401816919::ML:home": {
    "kind": "call",
@@ -1650,8 +1665,13 @@
    "selected": true,
    "id": "call:mlb:401816919::ML:home",
    "captured_at": "2026-09-12T21:13:19.783858+00:00",
-   "result": "Pending",
-   "version": "2026-09-06-ev2"
+   "result": "Win",
+   "version": "2026-09-06-ev2",
+   "units": 0.645161,
+   "actual": null,
+   "final_home": 8.0,
+   "final_away": 1.0,
+   "graded_at": "2026-09-13T21:12:46.050879+00:00"
   },
   "call:mlb:401816927::ML:home": {
    "kind": "call",
@@ -1671,8 +1691,13 @@
    "selected": true,
    "id": "call:mlb:401816927::ML:home",
    "captured_at": "2026-09-13T04:14:23.233984+00:00",
-   "result": "Pending",
-   "version": "2026-09-06-ev2"
+   "result": "Loss",
+   "version": "2026-09-06-ev2",
+   "units": -1,
+   "actual": null,
+   "final_home": 3.0,
+   "final_away": 4.0,
+   "graded_at": "2026-09-13T21:12:46.050879+00:00"
   },
   "call:mlb:401816929::ML:home": {
    "kind": "call",
@@ -1692,8 +1717,13 @@
    "selected": true,
    "id": "call:mlb:401816929::ML:home",
    "captured_at": "2026-09-13T14:13:06.268572+00:00",
-   "result": "Pending",
-   "version": "2026-09-06-ev2"
+   "result": "Loss",
+   "version": "2026-09-06-ev2",
+   "units": -1,
+   "actual": null,
+   "final_home": 3.0,
+   "final_away": 4.0,
+   "graded_at": "2026-09-13T21:12:46.050879+00:00"
   },
   "call:mlb:401816936::ML:away": {
    "kind": "call",
