@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-13T17:12:15+00:00",
+ "generated": "2026-09-13T18:15:55+00:00",
  "games": {
   "401816905": {
    "completed": true,
@@ -861,6 +861,13 @@
    "league": "epl",
    "date": "2026-09-13",
    "score": "BHA 5 @ COV 0"
+  },
+  "401879278": {
+   "completed": true,
+   "winner": "away",
+   "league": "epl",
+   "date": "2026-09-13",
+   "score": "MNC 1 @ MAN 0"
   },
   "401879285": {
    "completed": true,
