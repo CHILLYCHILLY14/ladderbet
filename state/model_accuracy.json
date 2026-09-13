@@ -982,8 +982,13 @@
    "selected": true,
    "id": "call:ncaaf:401864503::ML:away",
    "captured_at": "2026-09-10T23:11:24.077417+00:00",
-   "result": "Pending",
-   "version": "2026-09-06-ev2"
+   "result": "Win",
+   "version": "2026-09-06-ev2",
+   "units": 0.571429,
+   "actual": null,
+   "final_home": 24.0,
+   "final_away": 28.0,
+   "graded_at": "2026-09-13T02:13:56.617425+00:00"
   },
   "call:mlb:401816891::ML:home": {
    "kind": "call",
@@ -1463,8 +1468,13 @@
    "selected": true,
    "id": "call:mlb:401816912::ML:home",
    "captured_at": "2026-09-12T09:13:06.545440+00:00",
-   "result": "Pending",
-   "version": "2026-09-06-ev2"
+   "result": "Win",
+   "version": "2026-09-06-ev2",
+   "units": 0.518135,
+   "actual": null,
+   "final_home": 13.0,
+   "final_away": 9.0,
+   "graded_at": "2026-09-13T02:13:56.617425+00:00"
   },
   "call:ncaaf:401864571::ML:home": {
    "kind": "call",
