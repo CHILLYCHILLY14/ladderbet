@@ -1378,8 +1378,13 @@
    "selected": true,
    "id": "call:nfl:401872929::ML:home",
    "captured_at": "2026-09-11T21:12:52.468380+00:00",
-   "result": "Pending",
-   "version": "2026-09-06-ev2"
+   "result": "Win",
+   "version": "2026-09-06-ev2",
+   "units": 0.4,
+   "actual": null,
+   "final_home": 24.0,
+   "final_away": 22.0,
+   "graded_at": "2026-09-14T00:20:37.995754+00:00"
   },
   "call:nfl:401872928::ML:home": {
    "kind": "call",
@@ -1399,8 +1404,13 @@
    "selected": true,
    "id": "call:nfl:401872928::ML:home",
    "captured_at": "2026-09-11T21:12:52.468380+00:00",
-   "result": "Pending",
-   "version": "2026-09-06-ev2"
+   "result": "Win",
+   "version": "2026-09-06-ev2",
+   "units": 0.588235,
+   "actual": null,
+   "final_home": 27.0,
+   "final_away": 13.0,
+   "graded_at": "2026-09-14T00:20:37.995754+00:00"
   },
   "call:mlb:401816908::ML:away": {
    "kind": "call",
@@ -1592,8 +1602,13 @@
    "selected": true,
    "id": "call:mlb:401816922::ML:home",
    "captured_at": "2026-09-12T21:13:19.783858+00:00",
-   "result": "Pending",
-   "version": "2026-09-06-ev2"
+   "result": "Win",
+   "version": "2026-09-06-ev2",
+   "units": 0.540541,
+   "actual": null,
+   "final_home": 4.0,
+   "final_away": 1.0,
+   "graded_at": "2026-09-14T00:20:37.995754+00:00"
   },
   "call:mlb:401816920::ML:home": {
    "kind": "call",
