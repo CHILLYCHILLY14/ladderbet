@@ -1781,6 +1781,27 @@
    "captured_at": "2026-09-13T20:13:35.912068+00:00",
    "result": "Pending",
    "version": "2026-09-06-ev2"
+  },
+  "call:mlb:401816934::ML:home": {
+   "kind": "call",
+   "league": "mlb",
+   "event_id": "401816934",
+   "start": "2026-09-14T22:40Z",
+   "matchup": "Chicago White Sox @ Cleveland Guardians",
+   "pick": "Cleveland Guardians",
+   "market": "ML",
+   "side": "home",
+   "price": -157.0,
+   "probability": 0.5842,
+   "tier": "SCREENED",
+   "edge": 0,
+   "book": "DraftKings",
+   "three_way": false,
+   "selected": true,
+   "id": "call:mlb:401816934::ML:home",
+   "captured_at": "2026-09-14T04:15:00.242902+00:00",
+   "result": "Pending",
+   "version": "2026-09-06-ev2"
   }
  }
 }
