@@ -1949,6 +1949,27 @@
    "captured_at": "2026-09-14T19:14:15.948288+00:00",
    "result": "Pending",
    "version": "2026-09-06-ev2"
+  },
+  "call:mlb:401816956::ML:home": {
+   "kind": "call",
+   "league": "mlb",
+   "event_id": "401816956",
+   "start": "2026-09-16T01:40Z",
+   "matchup": "Miami Marlins @ Arizona Diamondbacks",
+   "pick": "Arizona Diamondbacks",
+   "market": "ML",
+   "side": "home",
+   "price": -150.0,
+   "probability": 0.5734,
+   "tier": "SCREENED",
+   "edge": 0,
+   "book": "DraftKings",
+   "three_way": false,
+   "selected": true,
+   "id": "call:mlb:401816956::ML:home",
+   "captured_at": "2026-09-14T20:15:00.198996+00:00",
+   "result": "Pending",
+   "version": "2026-09-06-ev2"
   }
  }
 }
