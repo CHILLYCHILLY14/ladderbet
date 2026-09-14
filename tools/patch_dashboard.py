@@ -35,6 +35,10 @@ SCRIPT = r'''
     var arr=entries().slice().sort(function(a,b){
       return String(a.added||a.placed_at||'').localeCompare(String(b.added||b.placed_at||''));
     });
+    if(CFG.reset_at) arr=arr.filter(function(e){
+      var placed=String(e.added||e.placed_at||'');
+      return !placed || placed>=CFG.reset_at;
+    });
     if(!arr.length){
       var rr=Number(CFG.rung||0), bb=Number(CFG.base_stake||5);
       return {rung:rr, stake:rr===0?bb:Number(CFG.stake||bb), run:[]};

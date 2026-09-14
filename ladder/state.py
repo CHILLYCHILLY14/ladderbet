@@ -32,6 +32,8 @@ class Ladder:
     stop_loss_days: int = 30
     timezone: str = "America/Toronto"
     halted: bool = False
+    # Preserve earlier bets for reporting, but do not let them advance a new run.
+    reset_at: str = ""
     rung: int = 0
     stake: float = 5.00
     pending: dict | None = None
@@ -223,6 +225,8 @@ class Ladder:
         """Actual wager P/L since the last reset; works with existing history."""
         profit = 0.0
         for bet in reversed(self.history):
+            if self.reset_at and (bet.get("placed_at") or bet.get("settled_at") or "") < self.reset_at:
+                break
             if bet.get("event") == "cash_out" or bet.get("cashed_out") or bet.get("result") == "loss":
                 break
             if bet.get("result") == "win":
@@ -255,6 +259,8 @@ class Ladder:
         """
         out: list[float] = []
         for h in reversed(self.history):
+            if self.reset_at and (h.get("placed_at") or h.get("settled_at") or "") < self.reset_at:
+                break
             if h.get("event") == "cash_out":
                 break
             r = h.get("result")

@@ -9,8 +9,9 @@
   "stop_loss_days": 30,
   "timezone": "America/Toronto",
   "halted": false,
-  "rung": 4,
-  "stake": 27.66,
+  "reset_at": "2026-09-14T22:02:03+00:00",
+  "rung": 0,
+  "stake": 5.0,
   "pending": null,
   "history": [
     {

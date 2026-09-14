@@ -568,6 +568,7 @@ def render(state: dict, candidates: list[dict], warnings: list[str],
     p.append('<script type="application/json" id="ladder-data">')
     p.append(_json.dumps({
         "state": {"rung": rung, "max_rung": max_rung, "base_stake": base,
+                  "reset_at": state.get("reset_at", ""),
                   "stake": state.get("stake", base),
                   "stake_increment": state.get("stake_increment", 0.01)},
         "candidates": [{"pick": c.get("pick", ""),

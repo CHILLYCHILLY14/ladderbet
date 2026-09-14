@@ -582,6 +582,7 @@ def cmd_resume(args, cfg):
 def cmd_reset(args, cfg):
     lad = _load(args, cfg)
     lad.pending = None
+    lad.reset_at = _dt.datetime.now(_dt.timezone.utc).isoformat(timespec="seconds")
     lad._reset()
     lad.save(args.state)
     print("ladder reset to rung 0")

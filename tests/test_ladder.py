@@ -726,6 +726,16 @@ def test_ledger_reflow_matches_python_ladder():
     assert lad.rung == 0 and lad.net == -5.0
 
 
+def test_reset_boundary_preserves_history_but_ends_old_run():
+    lad = Ladder(base_stake=5.0, rung=2, stake=12.0,
+                 reset_at="2026-09-14T22:00:00+00:00",
+                 history=[{"placed_at": "2026-09-05T12:00:00+00:00",
+                           "result": "win", "stake": 5, "returned": 8}])
+    assert len(lad.history) == 1
+    assert lad.current_run_profit() == 0
+    assert lad.current_run_stakes() == []
+
+
 def test_browser_and_python_ladders_agree():
     """Two implementations of the same ladder is exactly what goes quietly wrong.
 

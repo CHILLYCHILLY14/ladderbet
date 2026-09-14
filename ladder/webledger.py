@@ -127,6 +127,8 @@ LEDGER_JS = r"""
     var rung=0, stake=CFG.base_stake, inc=CFG.stake_increment||0.01;
     var net=0, runningPL=0, runPL=0, cashed=0, bust=0;
     entries.forEach(function(e){
+      var placed=String(e.added||e.placed_at||'');
+      if(CFG.reset_at && placed && placed<CFG.reset_at) return;
       var want = Math.floor(stake/inc+1e-9)*inc;
       if(!e.stake_edited) e.stake = want;
       e.rung = rung;
