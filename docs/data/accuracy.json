@@ -1,85 +1,85 @@
 {
  "schema": 1,
- "generated_at": "2026-09-15T01:14:34.486575+00:00",
+ "generated_at": "2026-09-15T02:15:57.162753+00:00",
  "label": "Ladder screened-option accuracy",
  "method": "Every screened option is saved before the event, whether or not you choose it. Probabilities here are de-vigged market estimates, not an independent sports model. First pre-event snapshot, frozen line and price. All model picks, including PASS/AVOID and unstaked picks. One preferred side per event/market in pick statistics; the complete priced-side audit is separate. One hypothetical unit per pick; no actual wagers are created. Missing results remain pending.",
  "overall": {
-  "logged": 81,
+  "logged": 82,
   "wins": 36,
-  "losses": 19,
+  "losses": 20,
   "pushes": 0,
   "voids": 0,
-  "settled": 55,
+  "settled": 56,
   "pending": 26,
-  "win_rate": 0.6545454545454545,
-  "units": 0.829,
-  "roi": 0.015073381818181814,
-  "brier": 0.23165
+  "win_rate": 0.6428571428571429,
+  "units": -0.171,
+  "roi": -0.0030529285714285754,
+  "brier": 0.23361
  },
  "all_calls": {
-  "logged": 81,
+  "logged": 82,
   "wins": 36,
-  "losses": 19,
+  "losses": 20,
   "pushes": 0,
   "voids": 0,
-  "settled": 55,
+  "settled": 56,
   "pending": 26,
-  "win_rate": 0.6545454545454545,
-  "units": 0.829,
-  "roi": 0.015073381818181814,
-  "brier": 0.23165
+  "win_rate": 0.6428571428571429,
+  "units": -0.171,
+  "roi": -0.0030529285714285754,
+  "brier": 0.23361
  },
  "by_tier": {
   "SCREENED": {
-   "logged": 81,
+   "logged": 82,
    "wins": 36,
-   "losses": 19,
+   "losses": 20,
    "pushes": 0,
    "voids": 0,
-   "settled": 55,
+   "settled": 56,
    "pending": 26,
-   "win_rate": 0.6545454545454545,
-   "units": 0.829,
-   "roi": 0.015073381818181814,
-   "brier": 0.23165
+   "win_rate": 0.6428571428571429,
+   "units": -0.171,
+   "roi": -0.0030529285714285754,
+   "brier": 0.23361
   }
  },
  "by_market": {
   "ML": {
-   "logged": 81,
+   "logged": 82,
    "wins": 36,
-   "losses": 19,
+   "losses": 20,
    "pushes": 0,
    "voids": 0,
-   "settled": 55,
+   "settled": 56,
    "pending": 26,
-   "win_rate": 0.6545454545454545,
-   "units": 0.829,
-   "roi": 0.015073381818181814,
-   "brier": 0.23165
+   "win_rate": 0.6428571428571429,
+   "units": -0.171,
+   "roi": -0.0030529285714285754,
+   "brier": 0.23361
   }
  },
  "by_version": {
   "2026-09-06-ev2": {
-   "logged": 81,
+   "logged": 82,
    "wins": 36,
-   "losses": 19,
+   "losses": 20,
    "pushes": 0,
    "voids": 0,
-   "settled": 55,
+   "settled": 56,
    "pending": 26,
-   "win_rate": 0.6545454545454545,
-   "units": 0.829,
-   "roi": 0.015073381818181814,
-   "brier": 0.23165
+   "win_rate": 0.6428571428571429,
+   "units": -0.171,
+   "roi": -0.0030529285714285754,
+   "brier": 0.23361
   }
  },
  "calibration": [
   {
    "bucket": "50\u201360%",
-   "n": 18,
-   "predicted": 0.58709,
-   "actual": 0.61111
+   "n": 19,
+   "predicted": 0.58694,
+   "actual": 0.57895
   },
   {
    "bucket": "60\u201370%",
@@ -252,6 +252,27 @@
   {
    "kind": "call",
    "league": "mlb",
+   "event_id": "401816948",
+   "start": "2026-09-15T22:40Z",
+   "matchup": "Milwaukee Brewers @ Pittsburgh Pirates",
+   "pick": "Milwaukee Brewers",
+   "market": "ML",
+   "side": "away",
+   "price": -250.0,
+   "probability": 0.6833,
+   "tier": "SCREENED",
+   "edge": 0,
+   "book": "DraftKings",
+   "three_way": false,
+   "selected": true,
+   "id": "call:mlb:401816948::ML:away",
+   "captured_at": "2026-09-15T02:15:55.500731+00:00",
+   "result": "Pending",
+   "version": "2026-09-06-ev2"
+  },
+  {
+   "kind": "call",
+   "league": "mlb",
    "event_id": "401816947",
    "start": "2026-09-15T22:40Z",
    "matchup": "Los Angeles Dodgers @ Cincinnati Reds",
@@ -356,8 +377,13 @@
    "selected": true,
    "id": "call:mlb:401816934::ML:home",
    "captured_at": "2026-09-14T04:15:00.242902+00:00",
-   "result": "Pending",
-   "version": "2026-09-06-ev2"
+   "result": "Loss",
+   "version": "2026-09-06-ev2",
+   "units": -1,
+   "actual": null,
+   "final_home": 3.0,
+   "final_away": 7.0,
+   "graded_at": "2026-09-15T02:15:57.160769+00:00"
   },
   {
    "kind": "call",
